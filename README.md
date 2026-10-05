@@ -13,7 +13,7 @@ Open http://127.0.0.1:4317
 
 The pathway and course edits save in this browser. Reset in the toolbar restores the starter chart and the course list.
 
-The course list can be filtered by bucket and by a requirement the course fulfills. With both selected, a course stays when it is in a chosen bucket and covers at least one chosen requirement. Clear removes the filters. Search still applies on top.
+The course list can be filtered by bucket and by a requirement the course fulfills. Two selections in the same group both have to match: a course stays only when it sits in every chosen bucket and covers every chosen requirement. Clear removes the filters. Search still applies on top.
 
 ## Regenerate courses.json
 

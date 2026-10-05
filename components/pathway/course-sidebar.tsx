@@ -72,20 +72,31 @@ export function CourseSidebar({
   }
 
   const groups = useMemo(() => {
-    return BUCKETS.filter((bucket) => buckets.length === 0 || buckets.includes(bucket)).map((bucket) => ({
-      bucket,
-      courses: courses.filter((course) => {
-        if (!course.buckets.includes(bucket)) return false;
-        if (requirements.length > 0 && !requirements.some((requirement) => courseFulfills(course, requirement))) {
-          return false;
-        }
-        if (!normalized) return true;
-        const haystack = [course.number, course.title, ...course.genEd, ...course.requirements]
-          .join(" ")
-          .toLowerCase();
-        return haystack.includes(normalized);
-      }),
-    })).filter((group) => group.courses.length > 0);
+    const matches = (course: Course) => {
+      if (buckets.length > 0 && !buckets.every((bucket) => course.buckets.includes(bucket))) return false;
+      if (requirements.length > 0 && !requirements.every((requirement) => courseFulfills(course, requirement))) {
+        return false;
+      }
+      if (!normalized) return true;
+      const haystack = [course.number, course.title, ...course.genEd, ...course.requirements]
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(normalized);
+    };
+
+    if (buckets.length > 1) {
+      const matched = courses.filter(matches);
+      return matched.length > 0 ? [{ key: buckets.join("|"), buckets, courses: matched }] : [];
+    }
+
+    const visibleBuckets = buckets.length === 1 ? buckets : [...BUCKETS];
+    return visibleBuckets
+      .map((bucket) => ({
+        key: bucket,
+        buckets: [bucket],
+        courses: courses.filter((course) => course.buckets.includes(bucket) && matches(course)),
+      }))
+      .filter((group) => group.courses.length > 0);
   }, [buckets, courses, normalized, requirements]);
 
   return (
@@ -170,19 +181,26 @@ export function CourseSidebar({
             </p>
           ) : (
             groups.map((group) => {
-              const meta = bucketMeta[group.bucket];
               return (
-                <section key={group.bucket}>
+                <section key={group.key}>
                   <div className="sticky top-0 z-10 flex items-center gap-2 bg-white/95 px-1 py-1.5 backdrop-blur-sm">
-                    <span className="size-2 rounded-full" style={{ background: meta.accent }} />
+                    <span className="flex shrink-0 items-center gap-1">
+                      {group.buckets.map((bucket) => (
+                        <span
+                          key={bucket}
+                          className="size-2 rounded-full"
+                          style={{ background: bucketMeta[bucket].accent }}
+                        />
+                      ))}
+                    </span>
                     <h2 className="text-xs font-semibold tracking-wide text-stone-700">
-                      {group.bucket}
+                      {group.buckets.join(" + ")}
                     </h2>
                     <span className="text-xs text-stone-400">{group.courses.length}</span>
                   </div>
                   <ul className="flex flex-col gap-1">
                     {group.courses.map((course) => (
-                      <li key={`${group.bucket}-${course.id}`}>
+                      <li key={`${group.key}-${course.id}`}>
                         <div className="flex items-start gap-1 rounded-lg px-1 py-1.5 hover:bg-stone-50">
                           <div
                             className="min-w-0 flex-1 cursor-grab active:cursor-grabbing"
