@@ -11,11 +11,13 @@ npm run dev
 
 Open http://127.0.0.1:4317
 
-## GitHub Pages
+## Deploy on Vercel
 
-The site is a static export. Pushing `main` to GitHub runs `.github/workflows/pages.yml` and publishes the `out/` folder.
+The app is a Next.js static export. Vercel builds it from the GitHub repo, so the site does not depend on GitHub Actions.
 
-In the GitHub repo, open Settings, then Pages, and set the source to GitHub Actions. The site address is on that page after the first deploy. Each visitor’s plans stay in their own browser.
+Import [rbose21-05/PIT_PATHWAYS](https://github.com/rbose21-05/PIT_PATHWAYS) at [vercel.com/new](https://vercel.com/new/clone?repository-url=https://github.com/rbose21-05/PIT_PATHWAYS). Leave the framework as Next.js and do not set `BASE_PATH`. When GitHub asks which repositories Vercel may access, allow only this repository.
+
+Each visitor’s plans stay in their own browser.
 
 The pathway and course edits save in this browser. Reset in the toolbar restores the starter chart and the course list.
 
