@@ -11,6 +11,12 @@ npm run dev
 
 Open http://127.0.0.1:4317
 
+## GitHub Pages
+
+The site is a static export. Pushing `main` to GitHub runs `.github/workflows/pages.yml` and publishes the `out/` folder.
+
+In the GitHub repo, open Settings, then Pages, and set the source to GitHub Actions. The site address is on that page after the first deploy. Each visitor’s plans stay in their own browser.
+
 The pathway and course edits save in this browser. Reset in the toolbar restores the starter chart and the course list.
 
 The course list can be filtered by bucket and by a requirement the course fulfills. Two selections in the same group both have to match: a course stays only when it sits in every chosen bucket and covers every chosen requirement. Clear removes the filters. Search still applies on top.
