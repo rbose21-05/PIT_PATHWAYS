@@ -327,9 +327,12 @@ export function satisfiedByPlan(nodes: PathwayNode[]) {
   const genEd = new Set<string>();
   const requirements = new Set<string>();
   for (const node of nodes) {
-    if (node.type !== "course") continue;
-    for (const code of node.data.genEd) genEd.add(code);
-    for (const label of node.data.requirements) requirements.add(label);
+    if (node.type === "root" || node.type === "course") {
+      for (const code of node.data.genEd) genEd.add(code);
+    }
+    if (node.type === "course") {
+      for (const label of node.data.requirements) requirements.add(label);
+    }
   }
   const labels = [...requirements].sort((a, b) => {
     const aRank = REQUIREMENT_ORDER.indexOf(a);
@@ -339,8 +342,12 @@ export function satisfiedByPlan(nodes: PathwayNode[]) {
     }
     return a.localeCompare(b);
   });
+  const ordered = ["SI", ...GEN_ED_CODES].filter((code) => genEd.has(code));
+  for (const code of genEd) {
+    if (!ordered.includes(code)) ordered.push(code);
+  }
   return {
-    genEd: GEN_ED_CODES.filter((code) => genEd.has(code)),
+    genEd: ordered,
     requirements: labels,
   };
 }
