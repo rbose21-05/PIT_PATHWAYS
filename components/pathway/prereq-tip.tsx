@@ -29,12 +29,17 @@ export function PrereqTip({
     if (!anchor || !tip) return;
     const host = anchor.getBoundingClientRect();
     const box = tip.getBoundingClientRect();
-    let top = host.bottom + 8;
-    let left = host.left;
-    if (top + box.height > window.innerHeight - 8) top = Math.max(8, host.top - box.height - 8);
-    if (left + box.width > window.innerWidth - 8) left = window.innerWidth - box.width - 8;
+    let left = host.right + 8;
+    let top = host.top;
+    if (left + box.width > window.innerWidth - 8) {
+      left = Math.max(8, host.left);
+      top = host.bottom + 8;
+      if (top + box.height > window.innerHeight - 8) top = Math.max(8, host.top - box.height - 8);
+    } else if (top + box.height > window.innerHeight - 8) {
+      top = Math.max(8, window.innerHeight - box.height - 8);
+    }
     tip.style.top = `${top}px`;
-    tip.style.left = `${Math.max(8, left)}px`;
+    tip.style.left = `${left}px`;
   }, [open, text]);
 
   function show() {
