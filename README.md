@@ -15,7 +15,7 @@ The pathway and course edits save in this browser. Reset in the toolbar restores
 
 The course list can be filtered by bucket and by a requirement the course fulfills. Two selections in the same group both have to match: a course stays only when it sits in every chosen bucket and covers every chosen requirement. Clear removes the filters. Search still applies on top.
 
-Adding a course places its box under that bucket and draws an arrow from the bucket. The × on a course box removes it. Delete, Backspace, and the Delete button do the same for the selected box. The root and the three buckets stay on the chart.
+Adding a course places its box under that bucket and draws an arrow from the bucket. A course listed under more than one bucket can count for only one: choosing it asks which bucket to use. The × on a course box removes it. Delete, Backspace, and the Delete button do the same for the selected box. The root and the three buckets stay on the chart.
 
 ## Regenerate courses.json
 

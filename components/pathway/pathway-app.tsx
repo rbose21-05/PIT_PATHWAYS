@@ -32,6 +32,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -41,6 +48,7 @@ import {
 import {
   blankCourse,
   BUCKET_NODE_WIDTH,
+  bucketMeta,
   bucketNodeId,
   chooseBucket,
   COURSE_NODE_WIDTH,
@@ -62,6 +70,12 @@ import {
 } from "@/lib/pathway-store";
 import type { Bucket, Course } from "@/lib/types";
 
+function bucketList(buckets: readonly string[]) {
+  if (buckets.length < 2) return buckets[0] ?? "";
+  if (buckets.length === 2) return `${buckets[0]} and ${buckets[1]}`;
+  return `${buckets.slice(0, -1).join(", ")}, and ${buckets[buckets.length - 1]}`;
+}
+
 function downloadUrl(href: string, filename: string) {
   const link = document.createElement("a");
   link.href = href;
@@ -78,6 +92,7 @@ function PathwayShell() {
   >({ mode: "closed" });
   const [resetOpen, setResetOpen] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [bucketPrompt, setBucketPrompt] = useState<Course | null>(null);
   const [editingEdgeId, setEditingEdgeId] = useState<string | null>(null);
   const [canDelete, setCanDelete] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -219,6 +234,22 @@ function PathwayShell() {
     });
     setCanDelete(true);
     reveal(focusId);
+  }
+
+  function requestPlace(course: Course) {
+    const placed = nodes.some((node) => node.type === "course" && node.data.courseId === course.id);
+    if (!placed && course.buckets.length > 1) {
+      setSidebarOpen(false);
+      setBucketPrompt(course);
+      return;
+    }
+    placeCourse(course, course.buckets.length === 1 ? course.buckets[0] : undefined);
+  }
+
+  function countForBucket(bucket: Bucket) {
+    const course = bucketPrompt;
+    setBucketPrompt(null);
+    if (course) placeCourse(course, bucket);
   }
 
   const removeCourseNode = useCallback((id: string) => {
@@ -369,7 +400,7 @@ function PathwayShell() {
     return true;
   }, [flow]);
 
-  const dialogOpen = dialog.mode !== "closed" || resetOpen || notice !== null;
+  const dialogOpen = dialog.mode !== "closed" || resetOpen || notice !== null || bucketPrompt !== null;
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -441,7 +472,7 @@ function PathwayShell() {
         <aside className="hidden w-[320px] shrink-0 border-r border-stone-200 md:flex md:min-h-0 md:flex-col">
           <CourseSidebar
             courses={courses}
-            onAdd={(course, bucket) => placeCourse(course, bucket)}
+            onAdd={(course) => requestPlace(course)}
             onEdit={(course) => setDialog({ mode: "edit", course })}
             onCreate={() => setDialog({ mode: "add" })}
           />
@@ -464,7 +495,7 @@ function PathwayShell() {
             updateNodeLabel={updateNodeLabel}
             updateEdgeLabel={updateEdgeLabel}
             removeCourseNode={removeCourseNode}
-            onDropCourse={(course, position) => placeCourse(course, undefined, position.x)}
+            onDropCourse={(course) => requestPlace(course)}
           />
         </main>
       </div>
@@ -477,7 +508,7 @@ function PathwayShell() {
           </SheetHeader>
           <CourseSidebar
             courses={courses}
-            onAdd={(course, bucket) => placeCourse(course, bucket)}
+            onAdd={(course) => requestPlace(course)}
             onEdit={(course) => {
               setSidebarOpen(false);
               setDialog({ mode: "edit", course });
@@ -489,6 +520,37 @@ function PathwayShell() {
           />
         </SheetContent>
       </Sheet>
+
+      <Dialog open={bucketPrompt !== null} onOpenChange={(open) => { if (!open) setBucketPrompt(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Choose one bucket</DialogTitle>
+            <DialogDescription>
+              {bucketPrompt
+                ? `${bucketPrompt.number} is listed under ${bucketList(bucketPrompt.buckets)}. It can count for only one.`
+                : ""}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-2">
+            {bucketPrompt?.buckets.map((bucket) => {
+              const meta = bucketMeta[bucket];
+              return (
+                <Button
+                  key={bucket}
+                  type="button"
+                  variant="outline"
+                  className="justify-start"
+                  style={{ borderColor: meta.accent, color: meta.ink }}
+                  onClick={() => countForBucket(bucket)}
+                >
+                  <span className="size-2 rounded-full" style={{ background: meta.accent }} />
+                  {bucket}
+                </Button>
+              );
+            })}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {dialog.mode !== "closed" ? (
         <CourseDialog
