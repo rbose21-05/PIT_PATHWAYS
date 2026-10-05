@@ -6,6 +6,7 @@ type GraphActions = {
   updateNodeLabel: (id: string, label: string) => void;
   updateEdgeLabel: (id: string, label: string) => void;
   removeCourseNode: (id: string) => void;
+  prerequisitesFor: (courseId: string) => string;
   editingEdgeId: string | null;
   setEditingEdgeId: (id: string | null) => void;
 };

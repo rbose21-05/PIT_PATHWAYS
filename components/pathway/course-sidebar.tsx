@@ -4,6 +4,7 @@ import { Pencil, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { PathwayChips } from "@/components/pathway/chips";
+import { PrereqTip } from "@/components/pathway/prereq-tip";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -201,6 +202,7 @@ export function CourseSidebar({
                   <ul className="flex flex-col gap-1">
                     {group.courses.map((course) => (
                       <li key={`${group.key}-${course.id}`}>
+                        <PrereqTip prerequisites={course.prerequisites}>
                         <div className="flex items-start gap-1 rounded-lg px-1 py-1.5 hover:bg-stone-50">
                           <div
                             className="min-w-0 flex-1 cursor-grab active:cursor-grabbing"
@@ -248,6 +250,7 @@ export function CourseSidebar({
                             </Button>
                           </div>
                         </div>
+                        </PrereqTip>
                       </li>
                     ))}
                   </ul>

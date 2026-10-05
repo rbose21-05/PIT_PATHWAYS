@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { PathwayChips } from "@/components/pathway/chips";
+import { PrereqTip } from "@/components/pathway/prereq-tip";
 import { useGraphActions } from "@/components/pathway/graph-context";
 import { bucketMeta, type BucketNode, type CourseFlowNode, type RootNode } from "@/lib/pathway";
 import { cn } from "@/lib/utils";
@@ -140,8 +141,9 @@ export function BucketNode({ id, data }: NodeProps<BucketNode>) {
 }
 
 export function CourseNode({ id, data }: NodeProps<CourseFlowNode>) {
-  const { updateNodeLabel, removeCourseNode } = useGraphActions();
+  const { updateNodeLabel, removeCourseNode, prerequisitesFor } = useGraphActions();
   return (
+    <PrereqTip prerequisites={prerequisitesFor(data.courseId)}>
     <div className="pit-card relative w-[260px] rounded-xl border border-stone-200 bg-white px-3 py-2.5 shadow-sm">
       <NodeHandles />
       <button
@@ -168,5 +170,6 @@ export function CourseNode({ id, data }: NodeProps<CourseFlowNode>) {
         <PathwayChips genEd={data.genEd} requirements={data.requirements} />
       </div>
     </div>
+    </PrereqTip>
   );
 }

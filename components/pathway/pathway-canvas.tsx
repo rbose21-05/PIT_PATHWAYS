@@ -70,9 +70,21 @@ export function PathwayCanvas({
   onDropCourse: (course: Course, position: { x: number; y: number }) => void;
 }) {
   const { screenToFlowPosition } = useReactFlow();
+  const prerequisitesById = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const course of courses) map.set(course.id, course.prerequisites);
+    return map;
+  }, [courses]);
   const actions = useMemo(
-    () => ({ updateNodeLabel, updateEdgeLabel, removeCourseNode, editingEdgeId, setEditingEdgeId }),
-    [editingEdgeId, removeCourseNode, setEditingEdgeId, updateEdgeLabel, updateNodeLabel],
+    () => ({
+      updateNodeLabel,
+      updateEdgeLabel,
+      removeCourseNode,
+      prerequisitesFor: (courseId: string) => prerequisitesById.get(courseId) ?? "",
+      editingEdgeId,
+      setEditingEdgeId,
+    }),
+    [editingEdgeId, prerequisitesById, removeCourseNode, setEditingEdgeId, updateEdgeLabel, updateNodeLabel],
   );
 
   const onDragOver = useCallback((event: React.DragEvent) => {
