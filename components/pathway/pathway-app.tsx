@@ -40,6 +40,11 @@ import {
 } from "@/components/ui/sheet";
 import {
   blankCourse,
+  BUCKET_NODE_WIDTH,
+  bucketNodeId,
+  chooseBucket,
+  COURSE_NODE_WIDTH,
+  courseColumnPosition,
   courseNodeId,
   createDefaultState,
   edgePresentation,
@@ -55,7 +60,7 @@ import {
   subscribePathway,
   updatePathway,
 } from "@/lib/pathway-store";
-import type { Course } from "@/lib/types";
+import type { Bucket, Course } from "@/lib/types";
 
 function downloadUrl(href: string, filename: string) {
   const link = document.createElement("a");
@@ -78,20 +83,6 @@ function PathwayShell() {
   const [exporting, setExporting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const flow = useReactFlow();
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key !== "Backspace") return;
-      const target = event.target;
-      if (target instanceof HTMLElement) {
-        const tag = target.tagName;
-        if (tag === "INPUT" || tag === "TEXTAREA" || target.isContentEditable) return;
-      }
-      event.preventDefault();
-    };
-    window.addEventListener("keydown", onKey, true);
-    return () => window.removeEventListener("keydown", onKey, true);
-  }, []);
 
   const reveal = useCallback(
     (id: string) => {
@@ -165,50 +156,79 @@ function PathwayShell() {
     [],
   );
 
-  function placeCourse(course: Course, position?: { x: number; y: number }) {
-    const id = courseNodeId(course.id);
-    const existing = nodes.some(
-      (node) => node.id === id || (node.type === "course" && node.data.courseId === course.id),
-    );
+  function placeCourse(course: Course, bucket?: Bucket, dropX?: number) {
     setSidebarOpen(false);
-    if (existing) {
-      updatePathway((current) => ({
-        ...current,
-        nodes: current.nodes.map((node) => ({
-          ...node,
-          selected: node.id === id || (node.type === "course" && node.data.courseId === course.id),
-        })),
-        edges: current.edges.map((edge) => ({ ...edge, selected: false })),
-      }));
-      reveal(id);
-      return;
-    }
+    let focusId = courseNodeId(course.id);
+    updatePathway((current) => {
+      const existing = current.nodes.find(
+        (node) => node.type === "course" && (node.id === focusId || node.data.courseId === course.id),
+      );
+      if (existing) {
+        focusId = existing.id;
+        return {
+          ...current,
+          nodes: current.nodes.map((node) => ({ ...node, selected: node.id === existing.id })),
+          edges: current.edges.map((edge) => ({ ...edge, selected: false })),
+        };
+      }
 
-    const count = nodes.filter((node) => node.type === "course").length;
-    const nextPosition = position ?? {
-      x: (count % 3) * 290,
-      y: 420 + Math.floor(count / 3) * 180,
-    };
-    const node: CourseFlowNode = {
-      id,
-      type: "course",
-      position: nextPosition,
-      selected: true,
-      data: {
-        courseId: course.id,
-        number: course.number,
-        label: course.title,
-        genEd: [...course.genEd],
-        requirements: [...course.requirements],
-      },
-    };
+      const bucketNodes = current.nodes.flatMap((node) =>
+        node.type === "bucket"
+          ? [{ id: node.id, bucket: node.data.bucket, x: node.position.x, y: node.position.y }]
+          : [],
+      );
+      const chosen =
+        bucket && course.buckets.includes(bucket)
+          ? bucket
+          : (chooseBucket(course.buckets, bucketNodes, dropX) ?? course.buckets[0]);
+      const anchor = bucketNodes.find((node) => node.bucket === chosen);
+      const sourceId = anchor?.id ?? bucketNodeId(chosen);
+      const origin = anchor ? { x: anchor.x, y: anchor.y } : { x: 0, y: 188 };
+      const columnX = origin.x + (BUCKET_NODE_WIDTH - COURSE_NODE_WIDTH) / 2;
+      const siblingYs = current.nodes
+        .filter((node) => node.type === "course" && Math.abs(node.position.x - columnX) < 40)
+        .map((node) => node.position.y);
+      const position = courseColumnPosition(origin, siblingYs);
+      const node: CourseFlowNode = {
+        id: focusId,
+        type: "course",
+        position,
+        selected: true,
+        data: {
+          courseId: course.id,
+          number: course.number,
+          label: course.title,
+          genEd: [...course.genEd],
+          requirements: [...course.requirements],
+        },
+      };
+      const edge: PathwayEdge = {
+        id: `e-${sourceId}-${focusId}`,
+        source: sourceId,
+        target: focusId,
+        sourceHandle: "bottom",
+        targetHandle: "top",
+        data: { label: "" },
+        ...edgePresentation,
+      };
+      return {
+        ...current,
+        nodes: [...current.nodes.map((item) => ({ ...item, selected: false })), node],
+        edges: [...current.edges.map((item) => ({ ...item, selected: false })), edge],
+      };
+    });
+    setCanDelete(true);
+    reveal(focusId);
+  }
+
+  const removeCourseNode = useCallback((id: string) => {
     updatePathway((current) => ({
       ...current,
-      nodes: [...current.nodes.map((item) => ({ ...item, selected: false })), node],
-      edges: current.edges.map((edge) => ({ ...edge, selected: false })),
+      nodes: current.nodes.filter((node) => node.id !== id),
+      edges: current.edges.filter((edge) => edge.source !== id && edge.target !== id),
     }));
-    if (!position) reveal(id);
-  }
+    setCanDelete(false);
+  }, []);
 
   function saveCourse(draft: CourseDraft, existing: Course | null) {
     if (existing) {
@@ -322,6 +342,7 @@ function PathwayShell() {
           height: `${height}px`,
           transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
         },
+        filter: (node) => !(node instanceof HTMLElement && node.classList.contains("pit-node-remove")),
       });
       downloadUrl(dataUrl, "pit-pathways.png");
     } catch {
@@ -331,13 +352,40 @@ function PathwayShell() {
     }
   }
 
-  function deleteSelected() {
+  const deleteSelected = useCallback(() => {
     const selectedNodes = flow.getNodes().filter((node) => node.selected && node.type === "course");
     const selectedEdges = flow.getEdges().filter((edge) => edge.selected);
-    void flow.deleteElements({ nodes: selectedNodes, edges: selectedEdges });
-  }
+    if (selectedNodes.length === 0 && selectedEdges.length === 0) return false;
+    const nodeIds = new Set(selectedNodes.map((node) => node.id));
+    const edgeIds = new Set(selectedEdges.map((edge) => edge.id));
+    updatePathway((current) => ({
+      ...current,
+      nodes: current.nodes.filter((node) => !nodeIds.has(node.id)),
+      edges: current.edges.filter(
+        (edge) => !edgeIds.has(edge.id) && !nodeIds.has(edge.source) && !nodeIds.has(edge.target),
+      ),
+    }));
+    setCanDelete(false);
+    return true;
+  }, [flow]);
 
   const dialogOpen = dialog.mode !== "closed" || resetOpen || notice !== null;
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Backspace" && event.key !== "Delete") return;
+      const target = event.target;
+      if (target instanceof HTMLElement) {
+        const tag = target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || target.isContentEditable) return;
+      }
+      event.preventDefault();
+      if (dialogOpen) return;
+      if (deleteSelected()) event.stopPropagation();
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [deleteSelected, dialogOpen]);
 
   return (
     <div className="flex h-dvh flex-col bg-white text-stone-900">
@@ -353,7 +401,14 @@ function PathwayShell() {
         </Button>
         <h1 className="shrink-0 text-[13px] font-semibold tracking-tight">PIT Pathways</h1>
         <div className="toolbar-scroll ml-auto flex min-w-0 items-center gap-1 overflow-x-auto py-1">
-          <Button type="button" variant="outline" size="sm" disabled={!canDelete} onClick={deleteSelected}>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={!canDelete}
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={deleteSelected}
+          >
             Delete
           </Button>
           <Button type="button" variant="outline" size="sm" onClick={() => fileRef.current?.click()}>
@@ -386,7 +441,7 @@ function PathwayShell() {
         <aside className="hidden w-[320px] shrink-0 border-r border-stone-200 md:flex md:min-h-0 md:flex-col">
           <CourseSidebar
             courses={courses}
-            onAdd={(course) => placeCourse(course)}
+            onAdd={(course, bucket) => placeCourse(course, bucket)}
             onEdit={(course) => setDialog({ mode: "edit", course })}
             onCreate={() => setDialog({ mode: "add" })}
           />
@@ -408,7 +463,8 @@ function PathwayShell() {
             setEditingEdgeId={setEditingEdgeId}
             updateNodeLabel={updateNodeLabel}
             updateEdgeLabel={updateEdgeLabel}
-            onDropCourse={(course, position) => placeCourse(course, position)}
+            removeCourseNode={removeCourseNode}
+            onDropCourse={(course, position) => placeCourse(course, undefined, position.x)}
           />
         </main>
       </div>
@@ -421,7 +477,7 @@ function PathwayShell() {
           </SheetHeader>
           <CourseSidebar
             courses={courses}
-            onAdd={(course) => placeCourse(course)}
+            onAdd={(course, bucket) => placeCourse(course, bucket)}
             onEdit={(course) => {
               setSidebarOpen(false);
               setDialog({ mode: "edit", course });

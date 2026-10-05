@@ -82,14 +82,47 @@ export function courseNodeId(courseId: string) {
   return `course-${courseId}`;
 }
 
+export const BUCKET_NODE_WIDTH = 210;
+export const COURSE_NODE_WIDTH = 260;
+const COURSE_STACK_GAP = 168;
+const COURSE_STACK_OFFSET = 132;
+
+export function bucketNodeId(bucket: Bucket) {
+  if (bucket === "Public Interest") return "bucket-public-interest";
+  if (bucket === "Social Governance") return "bucket-social-governance";
+  return "bucket-digital-technology";
+}
+
+export function chooseBucket(
+  courseBuckets: readonly Bucket[],
+  bucketNodes: { bucket: Bucket; x: number }[],
+  dropX?: number,
+) {
+  if (courseBuckets.length === 0) return null;
+  if (dropX === undefined || bucketNodes.length === 0) return courseBuckets[0];
+  const eligible = bucketNodes.filter((node) => courseBuckets.includes(node.bucket));
+  const pool = eligible.length > 0 ? eligible : bucketNodes;
+  let best = pool[0];
+  let bestDistance = Number.POSITIVE_INFINITY;
+  for (const node of pool) {
+    const distance = Math.abs(dropX - (node.x + BUCKET_NODE_WIDTH / 2));
+    if (distance < bestDistance) {
+      best = node;
+      bestDistance = distance;
+    }
+  }
+  return courseBuckets.includes(best.bucket) ? best.bucket : courseBuckets[0];
+}
+
+export function courseColumnPosition(origin: { x: number; y: number }, siblingYs: number[]) {
+  const x = origin.x + (BUCKET_NODE_WIDTH - COURSE_NODE_WIDTH) / 2;
+  if (siblingYs.length === 0) return { x, y: origin.y + COURSE_STACK_OFFSET };
+  return { x, y: Math.max(...siblingYs) + COURSE_STACK_GAP };
+}
+
 function bucketNode(bucket: Bucket, x: number): BucketNode {
   return {
-    id:
-      bucket === "Public Interest"
-        ? "bucket-public-interest"
-        : bucket === "Social Governance"
-          ? "bucket-social-governance"
-          : "bucket-digital-technology",
+    id: bucketNodeId(bucket),
     type: "bucket",
     position: { x, y: 188 },
     data: { bucket, label: bucket },

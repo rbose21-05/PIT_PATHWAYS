@@ -46,7 +46,7 @@ export function CourseSidebar({
   onCreate,
 }: {
   courses: Course[];
-  onAdd: (course: Course) => void;
+  onAdd: (course: Course, bucket: Bucket) => void;
   onEdit: (course: Course) => void;
   onCreate: () => void;
 }) {
@@ -227,7 +227,13 @@ export function CourseSidebar({
                               size="icon-sm"
                               variant="outline"
                               aria-label={`Add ${course.number} to the pathway`}
-                              onClick={() => onAdd(course)}
+                              onClick={() =>
+                                onAdd(
+                                  course,
+                                  group.buckets.find((bucket) => course.buckets.includes(bucket)) ??
+                                    course.buckets[0],
+                                )
+                              }
                             >
                               <Plus />
                             </Button>

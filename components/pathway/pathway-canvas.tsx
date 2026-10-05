@@ -50,6 +50,7 @@ export function PathwayCanvas({
   setEditingEdgeId,
   updateNodeLabel,
   updateEdgeLabel,
+  removeCourseNode,
   onDropCourse,
 }: {
   nodes: PathwayNode[];
@@ -65,12 +66,13 @@ export function PathwayCanvas({
   setEditingEdgeId: (id: string | null) => void;
   updateNodeLabel: (id: string, label: string) => void;
   updateEdgeLabel: (id: string, label: string) => void;
+  removeCourseNode: (id: string) => void;
   onDropCourse: (course: Course, position: { x: number; y: number }) => void;
 }) {
   const { screenToFlowPosition } = useReactFlow();
   const actions = useMemo(
-    () => ({ updateNodeLabel, updateEdgeLabel, editingEdgeId, setEditingEdgeId }),
-    [editingEdgeId, setEditingEdgeId, updateEdgeLabel, updateNodeLabel],
+    () => ({ updateNodeLabel, updateEdgeLabel, removeCourseNode, editingEdgeId, setEditingEdgeId }),
+    [editingEdgeId, removeCourseNode, setEditingEdgeId, updateEdgeLabel, updateNodeLabel],
   );
 
   const onDragOver = useCallback((event: React.DragEvent) => {

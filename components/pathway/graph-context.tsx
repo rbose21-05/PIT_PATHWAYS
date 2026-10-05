@@ -5,6 +5,7 @@ import { createContext, useContext } from "react";
 type GraphActions = {
   updateNodeLabel: (id: string, label: string) => void;
   updateEdgeLabel: (id: string, label: string) => void;
+  removeCourseNode: (id: string) => void;
   editingEdgeId: string | null;
   setEditingEdgeId: (id: string | null) => void;
 };

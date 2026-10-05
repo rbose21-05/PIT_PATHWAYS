@@ -1,6 +1,7 @@
 "use client";
 
 import { Handle, Position, type NodeProps } from "@xyflow/react";
+import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { PathwayChips } from "@/components/pathway/chips";
@@ -139,11 +140,23 @@ export function BucketNode({ id, data }: NodeProps<BucketNode>) {
 }
 
 export function CourseNode({ id, data }: NodeProps<CourseFlowNode>) {
-  const { updateNodeLabel } = useGraphActions();
+  const { updateNodeLabel, removeCourseNode } = useGraphActions();
   return (
     <div className="pit-card relative w-[260px] rounded-xl border border-stone-200 bg-white px-3 py-2.5 shadow-sm">
       <NodeHandles />
-      <div className="font-mono text-[11px] leading-snug font-medium break-words text-stone-500">
+      <button
+        type="button"
+        className="pit-node-remove nodrag nopan absolute top-1.5 right-1.5 flex size-5 items-center justify-center rounded-md text-stone-400 hover:bg-stone-100 hover:text-stone-900"
+        aria-label={`Remove ${data.number} from the pathway`}
+        onPointerDown={(event) => event.stopPropagation()}
+        onClick={(event) => {
+          event.stopPropagation();
+          removeCourseNode(id);
+        }}
+      >
+        <X className="size-3.5" />
+      </button>
+      <div className="pr-5 font-mono text-[11px] leading-snug font-medium break-words text-stone-500">
         {data.number}
       </div>
       <EditableLabel
