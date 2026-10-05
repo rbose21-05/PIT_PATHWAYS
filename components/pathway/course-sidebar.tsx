@@ -7,8 +7,37 @@ import { PathwayChips } from "@/components/pathway/chips";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { BUCKETS, type Course } from "@/lib/types";
+import { BUCKETS, GEN_ED_CODES, type Bucket, type Course } from "@/lib/types";
 import { COURSE_DRAG_TYPE, bucketMeta } from "@/lib/pathway";
+import { cn } from "@/lib/utils";
+
+const REQUIREMENT_ORDER = ["CS elective", "JYW", "IE"];
+
+function courseFulfills(course: Course, requirement: string) {
+  if ((GEN_ED_CODES as readonly string[]).includes(requirement)) {
+    return course.genEd.includes(requirement);
+  }
+  return course.requirements.includes(requirement);
+}
+
+function requirementOptions(courses: Course[]) {
+  const present = new Set<string>();
+  for (const course of courses) {
+    for (const code of course.genEd) present.add(code);
+    for (const label of course.requirements) present.add(label);
+  }
+  const genEd = GEN_ED_CODES.filter((code) => present.has(code));
+  const labels = [...present].filter((label) => !(GEN_ED_CODES as readonly string[]).includes(label));
+  labels.sort((a, b) => {
+    const aRank = REQUIREMENT_ORDER.indexOf(a);
+    const bRank = REQUIREMENT_ORDER.indexOf(b);
+    if (aRank !== -1 || bRank !== -1) {
+      return (aRank === -1 ? 99 : aRank) - (bRank === -1 ? 99 : bRank);
+    }
+    return a.localeCompare(b);
+  });
+  return [...genEd, ...labels];
+}
 
 export function CourseSidebar({
   courses,
@@ -22,13 +51,34 @@ export function CourseSidebar({
   onCreate: () => void;
 }) {
   const [query, setQuery] = useState("");
+  const [buckets, setBuckets] = useState<Bucket[]>([]);
+  const [requirements, setRequirements] = useState<string[]>([]);
   const normalized = query.trim().toLowerCase();
+  const fulfills = useMemo(() => requirementOptions(courses), [courses]);
+  const filtersOn = buckets.length > 0 || requirements.length > 0;
+
+  function toggleBucket(bucket: Bucket) {
+    setBuckets((current) =>
+      current.includes(bucket) ? current.filter((item) => item !== bucket) : [...current, bucket],
+    );
+  }
+
+  function toggleRequirement(requirement: string) {
+    setRequirements((current) =>
+      current.includes(requirement)
+        ? current.filter((item) => item !== requirement)
+        : [...current, requirement],
+    );
+  }
 
   const groups = useMemo(() => {
-    return BUCKETS.map((bucket) => ({
+    return BUCKETS.filter((bucket) => buckets.length === 0 || buckets.includes(bucket)).map((bucket) => ({
       bucket,
       courses: courses.filter((course) => {
         if (!course.buckets.includes(bucket)) return false;
+        if (requirements.length > 0 && !requirements.some((requirement) => courseFulfills(course, requirement))) {
+          return false;
+        }
         if (!normalized) return true;
         const haystack = [course.number, course.title, ...course.genEd, ...course.requirements]
           .join(" ")
@@ -36,7 +86,7 @@ export function CourseSidebar({
         return haystack.includes(normalized);
       }),
     })).filter((group) => group.courses.length > 0);
-  }, [courses, normalized]);
+  }, [buckets, courses, normalized, requirements]);
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-white">
@@ -50,6 +100,67 @@ export function CourseSidebar({
         <Button type="button" size="sm" onClick={onCreate}>
           Add
         </Button>
+      </div>
+      <div className="flex flex-col gap-2 border-b border-stone-200 px-2 py-2">
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-[11px] font-medium tracking-wide text-stone-500">Bucket</p>
+          {filtersOn ? (
+            <button
+              type="button"
+              className="text-[11px] font-medium text-stone-500 underline-offset-2 hover:underline"
+              onClick={() => {
+                setBuckets([]);
+                setRequirements([]);
+              }}
+            >
+              Clear
+            </button>
+          ) : null}
+        </div>
+        <div className="flex flex-wrap gap-1">
+          {BUCKETS.map((bucket) => {
+            const selected = buckets.includes(bucket);
+            const meta = bucketMeta[bucket];
+            return (
+              <button
+                key={bucket}
+                type="button"
+                aria-pressed={selected}
+                className="rounded-md border px-1.5 py-0.5 text-[11px] font-medium"
+                style={
+                  selected
+                    ? { background: meta.accent, borderColor: meta.accent, color: "white" }
+                    : { borderColor: "#e7e5e4", color: meta.ink }
+                }
+                onClick={() => toggleBucket(bucket)}
+              >
+                {bucket}
+              </button>
+            );
+          })}
+        </div>
+        <p className="text-[11px] font-medium tracking-wide text-stone-500">Fulfills</p>
+        <div className="flex flex-wrap gap-1">
+          {fulfills.map((requirement) => {
+            const selected = requirements.includes(requirement);
+            return (
+              <button
+                key={requirement}
+                type="button"
+                aria-pressed={selected}
+                className={cn(
+                  "rounded-md border px-1.5 py-0.5 text-[11px] font-medium",
+                  selected
+                    ? "border-stone-900 bg-stone-900 text-white"
+                    : "border-stone-200 bg-white text-stone-600",
+                )}
+                onClick={() => toggleRequirement(requirement)}
+              >
+                {requirement}
+              </button>
+            );
+          })}
+        </div>
       </div>
       <ScrollArea className="min-h-0 flex-1">
         <div className="flex flex-col gap-3 p-2 pb-4">
