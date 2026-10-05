@@ -18,8 +18,18 @@ export type CourseFlowNode = Node<CourseNodeData, "course">;
 export type PathwayNode = RootNode | BucketNode | CourseFlowNode;
 export type PathwayEdge = Edge<EdgeLabelData, "labeled">;
 
+export type PathwayVersion = {
+  id: string;
+  name: string;
+  nodes: PathwayNode[];
+  edges: PathwayEdge[];
+};
+
 export type PathwayState = {
   courses: Course[];
+  versions: PathwayVersion[];
+  activeVersionId: string;
+  chosenVersionId: string | null;
   nodes: PathwayNode[];
   edges: PathwayEdge[];
 };
@@ -168,10 +178,170 @@ export function createInitialEdges(): PathwayEdge[] {
 }
 
 export function createDefaultState(): PathwayState {
+  const nodes = createInitialNodes();
+  const edges = createInitialEdges();
+  const version: PathwayVersion = { id: "plan-1", name: "Plan 1", nodes, edges };
   return {
-    courses: defaultCourses.map((course) => ({ ...course, buckets: [...course.buckets], genEd: [...course.genEd], requirements: [...course.requirements] })),
-    nodes: createInitialNodes(),
-    edges: createInitialEdges(),
+    courses: defaultCourses.map((course) => ({
+      ...course,
+      buckets: [...course.buckets],
+      genEd: [...course.genEd],
+      requirements: [...course.requirements],
+    })),
+    versions: [version],
+    activeVersionId: version.id,
+    chosenVersionId: null,
+    nodes,
+    edges,
+  };
+}
+
+export function withActive(
+  state: PathwayState,
+  update: (graph: { nodes: PathwayNode[]; edges: PathwayEdge[] }) => {
+    nodes: PathwayNode[];
+    edges: PathwayEdge[];
+  },
+): PathwayState {
+  const next = update({ nodes: state.nodes, edges: state.edges });
+  return {
+    ...state,
+    nodes: next.nodes,
+    edges: next.edges,
+    versions: state.versions.map((version) =>
+      version.id === state.activeVersionId ? { ...version, nodes: next.nodes, edges: next.edges } : version,
+    ),
+  };
+}
+
+export function nextPlanId(versions: PathwayVersion[]) {
+  const taken = new Set(versions.map((version) => version.id));
+  let index = versions.length + 1;
+  while (taken.has(`plan-${index}`)) index += 1;
+  return `plan-${index}`;
+}
+
+function copyGraph(nodes: PathwayNode[], edges: PathwayEdge[]) {
+  return {
+    nodes: nodes.map((node) => ({ ...node, selected: false })),
+    edges: edges.map((edge) => ({ ...edge, selected: false })),
+  };
+}
+
+export function duplicateActiveVersion(state: PathwayState): PathwayState {
+  const id = nextPlanId(state.versions);
+  const graph = copyGraph(state.nodes, state.edges);
+  const version: PathwayVersion = {
+    id,
+    name: `Plan ${state.versions.length + 1}`,
+    nodes: graph.nodes,
+    edges: graph.edges,
+  };
+  return {
+    ...state,
+    versions: [...state.versions, version],
+    activeVersionId: id,
+    nodes: graph.nodes,
+    edges: graph.edges,
+  };
+}
+
+export function activateVersion(state: PathwayState, id: string): PathwayState {
+  const version = state.versions.find((item) => item.id === id);
+  if (!version || version.id === state.activeVersionId) return state;
+  const currentSaved = state.versions.map((item) =>
+    item.id === state.activeVersionId ? { ...item, nodes: state.nodes, edges: state.edges } : item,
+  );
+  const next = currentSaved.find((item) => item.id === id) ?? version;
+  return {
+    ...state,
+    versions: currentSaved,
+    activeVersionId: id,
+    nodes: next.nodes,
+    edges: next.edges,
+  };
+}
+
+export function coursesUnderBucket(nodes: PathwayNode[], edges: PathwayEdge[], bucket: Bucket) {
+  const sourceId = bucketNodeId(bucket);
+  const linked = new Set(edges.filter((edge) => edge.source === sourceId).map((edge) => edge.target));
+  const anchor = nodes.find((node) => node.type === "bucket" && node.data.bucket === bucket);
+  const columnX = anchor ? anchor.position.x + (BUCKET_NODE_WIDTH - COURSE_NODE_WIDTH) / 2 : null;
+  return nodes.filter((node): node is CourseFlowNode => {
+    if (node.type !== "course") return false;
+    if (linked.has(node.id)) return true;
+    return columnX !== null && Math.abs(node.position.x - columnX) < 40;
+  });
+}
+
+export function graphWithoutNodes(nodes: PathwayNode[], edges: PathwayEdge[], ids: Set<string>) {
+  return {
+    nodes: nodes.filter((node) => !ids.has(node.id)),
+    edges: edges.filter((edge) => !ids.has(edge.source) && !ids.has(edge.target) && !ids.has(edge.id)),
+  };
+}
+
+export function graphWithCourse(
+  nodes: PathwayNode[],
+  edges: PathwayEdge[],
+  course: Course,
+  bucket: Bucket,
+) {
+  const focusId = courseNodeId(course.id);
+  const anchor = nodes.find((node) => node.type === "bucket" && node.data.bucket === bucket);
+  const sourceId = anchor?.id ?? bucketNodeId(bucket);
+  const origin = anchor?.position ?? { x: 0, y: 188 };
+  const position = courseColumnPosition(origin, []);
+  const node: CourseFlowNode = {
+    id: focusId,
+    type: "course",
+    position,
+    selected: true,
+    data: {
+      courseId: course.id,
+      number: course.number,
+      label: course.title,
+      genEd: [...course.genEd],
+      requirements: [...course.requirements],
+    },
+  };
+  const edge: PathwayEdge = {
+    id: `e-${sourceId}-${focusId}`,
+    source: sourceId,
+    target: focusId,
+    sourceHandle: "bottom",
+    targetHandle: "top",
+    data: { label: "" },
+    ...edgePresentation,
+  };
+  return {
+    focusId,
+    nodes: [...nodes.map((item) => ({ ...item, selected: false })), node],
+    edges: [...edges.map((item) => ({ ...item, selected: false })), edge],
+  };
+}
+
+const REQUIREMENT_ORDER = ["CS elective", "JYW", "IE"];
+
+export function satisfiedByPlan(nodes: PathwayNode[]) {
+  const genEd = new Set<string>();
+  const requirements = new Set<string>();
+  for (const node of nodes) {
+    if (node.type !== "course") continue;
+    for (const code of node.data.genEd) genEd.add(code);
+    for (const label of node.data.requirements) requirements.add(label);
+  }
+  const labels = [...requirements].sort((a, b) => {
+    const aRank = REQUIREMENT_ORDER.indexOf(a);
+    const bRank = REQUIREMENT_ORDER.indexOf(b);
+    if (aRank !== -1 || bRank !== -1) {
+      return (aRank === -1 ? 99 : aRank) - (bRank === -1 ? 99 : bRank);
+    }
+    return a.localeCompare(b);
+  });
+  return {
+    genEd: GEN_ED_CODES.filter((code) => genEd.has(code)),
+    requirements: labels,
   };
 }
 
@@ -288,22 +458,59 @@ function parseEdge(value: unknown): PathwayEdge | null {
   };
 }
 
+function parseGraph(nodesValue: unknown, edgesValue: unknown) {
+  if (!Array.isArray(nodesValue) || !Array.isArray(edgesValue)) return null;
+  const nodes = nodesValue.map(parseNode);
+  const edges = edgesValue.map(parseEdge);
+  if (nodes.some((node) => node === null) || edges.some((edge) => edge === null)) return null;
+  return { nodes: nodes as PathwayNode[], edges: edges as PathwayEdge[] };
+}
+
+function parseVersion(value: unknown): PathwayVersion | null {
+  if (!value || typeof value !== "object") return null;
+  const record = value as Record<string, unknown>;
+  if (typeof record.id !== "string" || record.id.trim() === "") return null;
+  if (typeof record.name !== "string" || record.name.trim() === "") return null;
+  const graph = parseGraph(record.nodes, record.edges);
+  if (!graph) return null;
+  return { id: record.id, name: record.name.trim(), nodes: graph.nodes, edges: graph.edges };
+}
+
 export function parsePathwayState(value: unknown): PathwayState | null {
   if (!value || typeof value !== "object") return null;
   const record = value as Record<string, unknown>;
-  if (!Array.isArray(record.courses) || !Array.isArray(record.nodes) || !Array.isArray(record.edges)) {
-    return null;
-  }
+  if (!Array.isArray(record.courses)) return null;
   const courses = record.courses.map(parseCourse);
-  const nodes = record.nodes.map(parseNode);
-  const edges = record.edges.map(parseEdge);
   if (courses.some((course) => course === null)) return null;
-  if (nodes.some((node) => node === null)) return null;
-  if (edges.some((edge) => edge === null)) return null;
+
+  let versions: PathwayVersion[] | null = null;
+  if (Array.isArray(record.versions) && record.versions.length > 0) {
+    const parsed = record.versions.map(parseVersion);
+    if (parsed.some((version) => version === null)) return null;
+    versions = parsed as PathwayVersion[];
+  } else {
+    const graph = parseGraph(record.nodes, record.edges);
+    if (!graph) return null;
+    versions = [{ id: "plan-1", name: "Plan 1", nodes: graph.nodes, edges: graph.edges }];
+  }
+
+  const ids = new Set(versions.map((version) => version.id));
+  const activeVersionId =
+    typeof record.activeVersionId === "string" && ids.has(record.activeVersionId)
+      ? record.activeVersionId
+      : versions[0].id;
+  const chosenVersionId =
+    typeof record.chosenVersionId === "string" && ids.has(record.chosenVersionId)
+      ? record.chosenVersionId
+      : null;
+  const active = versions.find((version) => version.id === activeVersionId) ?? versions[0];
   return {
     courses: courses as Course[],
-    nodes: nodes as PathwayNode[],
-    edges: edges as PathwayEdge[],
+    versions,
+    activeVersionId: active.id,
+    chosenVersionId,
+    nodes: active.nodes,
+    edges: active.edges,
   };
 }
 
@@ -317,16 +524,15 @@ export function loadPathwayState(): PathwayState | null {
   }
 }
 
-export function serializePathwayState(state: PathwayState) {
+function serializeGraph(nodes: PathwayNode[], edges: PathwayEdge[]) {
   return {
-    courses: state.courses,
-    nodes: state.nodes.map((node) => ({
+    nodes: nodes.map((node) => ({
       id: node.id,
       type: node.type,
       position: node.position,
       data: node.data,
     })),
-    edges: state.edges.map((edge) => ({
+    edges: edges.map((edge) => ({
       id: edge.id,
       source: edge.source,
       target: edge.target,
@@ -334,6 +540,24 @@ export function serializePathwayState(state: PathwayState) {
       targetHandle: edge.targetHandle,
       data: { label: edge.data?.label ?? "" },
     })),
+  };
+}
+
+export function serializePathwayState(state: PathwayState) {
+  const versions = state.versions.map((version) =>
+    version.id === state.activeVersionId ? { ...version, nodes: state.nodes, edges: state.edges } : version,
+  );
+  const active = serializeGraph(state.nodes, state.edges);
+  return {
+    courses: state.courses,
+    versions: versions.map((version) => ({
+      id: version.id,
+      name: version.name,
+      ...serializeGraph(version.nodes, version.edges),
+    })),
+    activeVersionId: state.activeVersionId,
+    chosenVersionId: state.chosenVersionId,
+    ...active,
   };
 }
 

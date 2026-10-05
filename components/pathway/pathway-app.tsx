@@ -17,6 +17,7 @@ import { toPng } from "html-to-image";
 import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 import { useState } from "react";
 
+import { PathwayChips } from "@/components/pathway/chips";
 import { CourseDialog, type CourseDraft } from "@/components/pathway/course-dialog";
 import { CourseSidebar } from "@/components/pathway/course-sidebar";
 import { PathwayCanvas } from "@/components/pathway/pathway-canvas";
@@ -46,19 +47,20 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import {
+  activateVersion,
   blankCourse,
-  BUCKET_NODE_WIDTH,
   bucketMeta,
-  bucketNodeId,
-  chooseBucket,
-  COURSE_NODE_WIDTH,
-  courseColumnPosition,
   courseNodeId,
+  coursesUnderBucket,
   createDefaultState,
+  duplicateActiveVersion,
   edgePresentation,
+  graphWithCourse,
+  graphWithoutNodes,
   parsePathwayState,
+  satisfiedByPlan,
   serializePathwayState,
-  type CourseFlowNode,
+  withActive,
   type PathwayEdge,
   type PathwayNode,
 } from "@/lib/pathway";
@@ -93,6 +95,13 @@ function PathwayShell() {
   const [resetOpen, setResetOpen] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [bucketPrompt, setBucketPrompt] = useState<Course | null>(null);
+  const [replacePrompt, setReplacePrompt] = useState<{
+    course: Course;
+    bucket: Bucket;
+    occupantIds: string[];
+    occupantNumber: string;
+    occupantLabel: string;
+  } | null>(null);
   const [editingEdgeId, setEditingEdgeId] = useState<string | null>(null);
   const [canDelete, setCanDelete] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -116,45 +125,53 @@ function PathwayShell() {
   );
 
   const onNodesChange: OnNodesChange<PathwayNode> = useCallback((changes) => {
-    updatePathway((current) => ({
-      ...current,
-      nodes: applyNodeChanges(changes, current.nodes),
-    }));
+    updatePathway((current) =>
+      withActive(current, ({ nodes: currentNodes, edges }) => ({
+        nodes: applyNodeChanges(changes, currentNodes),
+        edges,
+      })),
+    );
   }, []);
 
   const onEdgesChange: OnEdgesChange<PathwayEdge> = useCallback((changes) => {
-    updatePathway((current) => ({
-      ...current,
-      edges: applyEdgeChanges(changes, current.edges),
-    }));
+    updatePathway((current) =>
+      withActive(current, ({ nodes: currentNodes, edges }) => ({
+        nodes: currentNodes,
+        edges: applyEdgeChanges(changes, edges),
+      })),
+    );
   }, []);
 
   const updateNodeLabel = useCallback((id: string, label: string) => {
-    updatePathway((current) => ({
-      ...current,
-      nodes: current.nodes.map((node) => {
-        if (node.id !== id) return node;
-        if (node.type === "root") return { ...node, data: { ...node.data, label } };
-        if (node.type === "bucket") return { ...node, data: { ...node.data, label } };
-        return { ...node, data: { ...node.data, label } };
-      }),
-    }));
+    updatePathway((current) =>
+      withActive(current, ({ nodes: currentNodes, edges }) => ({
+        edges,
+        nodes: currentNodes.map((node) => {
+          if (node.id !== id) return node;
+          if (node.type === "root") return { ...node, data: { ...node.data, label } };
+          if (node.type === "bucket") return { ...node, data: { ...node.data, label } };
+          return { ...node, data: { ...node.data, label } };
+        }),
+      })),
+    );
   }, []);
 
   const updateEdgeLabel = useCallback((id: string, label: string) => {
-    updatePathway((current) => ({
-      ...current,
-      edges: current.edges.map((edge) =>
-        edge.id === id ? { ...edge, data: { ...edge.data, label } } : edge,
-      ),
-    }));
+    updatePathway((current) =>
+      withActive(current, ({ nodes: currentNodes, edges }) => ({
+        nodes: currentNodes,
+        edges: edges.map((edge) => (edge.id === id ? { ...edge, data: { ...edge.data, label } } : edge)),
+      })),
+    );
   }, []);
 
   const onConnect = useCallback((connection: Connection) => {
-    updatePathway((current) => ({
-      ...current,
-      edges: addEdge({ ...connection, ...edgePresentation, data: { label: "" } }, current.edges),
-    }));
+    updatePathway((current) =>
+      withActive(current, ({ nodes: currentNodes, edges }) => ({
+        nodes: currentNodes,
+        edges: addEdge({ ...connection, ...edgePresentation, data: { label: "" } }, edges),
+      })),
+    );
   }, []);
 
   const onBeforeDelete: OnBeforeDelete<PathwayNode, PathwayEdge> = useCallback(
@@ -171,69 +188,98 @@ function PathwayShell() {
     [],
   );
 
-  function placeCourse(course: Course, bucket?: Bucket, dropX?: number) {
+  function placeCourse(course: Course, bucket?: Bucket) {
     setSidebarOpen(false);
+    const chosen = bucket && course.buckets.includes(bucket) ? bucket : course.buckets[0];
+    if (!chosen) return;
+    const existing = nodes.find((node) => node.type === "course" && node.data.courseId === course.id);
+    if (existing) {
+      updatePathway((current) =>
+        withActive(current, ({ nodes: currentNodes, edges }) => ({
+          nodes: currentNodes.map((node) => ({ ...node, selected: node.id === existing.id })),
+          edges: edges.map((edge) => ({ ...edge, selected: false })),
+        })),
+      );
+      setCanDelete(true);
+      reveal(existing.id);
+      return;
+    }
+    const occupants = coursesUnderBucket(nodes, edges, chosen);
+    if (occupants.length > 0) {
+      setReplacePrompt({
+        course,
+        bucket: chosen,
+        occupantIds: occupants.map((node) => node.id),
+        occupantNumber: occupants[0].data.number,
+        occupantLabel: occupants[0].data.label,
+      });
+      return;
+    }
     let focusId = courseNodeId(course.id);
-    updatePathway((current) => {
-      const existing = current.nodes.find(
-        (node) => node.type === "course" && (node.id === focusId || node.data.courseId === course.id),
-      );
-      if (existing) {
-        focusId = existing.id;
-        return {
-          ...current,
-          nodes: current.nodes.map((node) => ({ ...node, selected: node.id === existing.id })),
-          edges: current.edges.map((edge) => ({ ...edge, selected: false })),
-        };
-      }
+    updatePathway((current) =>
+      withActive(current, ({ nodes: currentNodes, edges }) => {
+        const placed = graphWithCourse(currentNodes, edges, course, chosen);
+        focusId = placed.focusId;
+        return placed;
+      }),
+    );
+    setCanDelete(true);
+    reveal(focusId);
+  }
 
-      const bucketNodes = current.nodes.flatMap((node) =>
-        node.type === "bucket"
-          ? [{ id: node.id, bucket: node.data.bucket, x: node.position.x, y: node.position.y }]
-          : [],
-      );
-      const chosen =
-        bucket && course.buckets.includes(bucket)
-          ? bucket
-          : (chooseBucket(course.buckets, bucketNodes, dropX) ?? course.buckets[0]);
-      const anchor = bucketNodes.find((node) => node.bucket === chosen);
-      const sourceId = anchor?.id ?? bucketNodeId(chosen);
-      const origin = anchor ? { x: anchor.x, y: anchor.y } : { x: 0, y: 188 };
-      const columnX = origin.x + (BUCKET_NODE_WIDTH - COURSE_NODE_WIDTH) / 2;
-      const siblingYs = current.nodes
-        .filter((node) => node.type === "course" && Math.abs(node.position.x - columnX) < 40)
-        .map((node) => node.position.y);
-      const position = courseColumnPosition(origin, siblingYs);
-      const node: CourseFlowNode = {
-        id: focusId,
-        type: "course",
-        position,
-        selected: true,
-        data: {
-          courseId: course.id,
-          number: course.number,
-          label: course.title,
-          genEd: [...course.genEd],
-          requirements: [...course.requirements],
-        },
-      };
-      const edge: PathwayEdge = {
-        id: `e-${sourceId}-${focusId}`,
-        source: sourceId,
-        target: focusId,
-        sourceHandle: "bottom",
-        targetHandle: "top",
-        data: { label: "" },
-        ...edgePresentation,
-      };
-      return {
-        ...current,
-        nodes: [...current.nodes.map((item) => ({ ...item, selected: false })), node],
-        edges: [...current.edges.map((item) => ({ ...item, selected: false })), edge],
-      };
+  function replaceInPlan() {
+    const prompt = replacePrompt;
+    if (!prompt) return;
+    setReplacePrompt(null);
+    let focusId = courseNodeId(prompt.course.id);
+    updatePathway((current) =>
+      withActive(current, ({ nodes: currentNodes, edges }) => {
+        const cleared = graphWithoutNodes(currentNodes, edges, new Set(prompt.occupantIds));
+        const placed = graphWithCourse(cleared.nodes, cleared.edges, prompt.course, prompt.bucket);
+        focusId = placed.focusId;
+        return placed;
+      }),
+    );
+    setCanDelete(true);
+    reveal(focusId);
+  }
+
+  function branchWithCourse() {
+    const prompt = replacePrompt;
+    if (!prompt) return;
+    setReplacePrompt(null);
+    let focusId = courseNodeId(prompt.course.id);
+    updatePathway((current) => {
+      const branched = duplicateActiveVersion(current);
+      return withActive(branched, ({ nodes: currentNodes, edges }) => {
+        const cleared = graphWithoutNodes(currentNodes, edges, new Set(prompt.occupantIds));
+        const placed = graphWithCourse(cleared.nodes, cleared.edges, prompt.course, prompt.bucket);
+        focusId = placed.focusId;
+        return placed;
+      });
     });
     setCanDelete(true);
     reveal(focusId);
+  }
+
+  function newVersion() {
+    updatePathway((current) => duplicateActiveVersion(current));
+    setCanDelete(false);
+    window.requestAnimationFrame(() => {
+      void flow.fitView({ padding: 0.2, maxZoom: 1, duration: 200 });
+    });
+  }
+
+  function chooseThisPlan() {
+    updatePathway((current) => ({ ...current, chosenVersionId: current.activeVersionId }));
+  }
+
+  function switchVersion(id: string) {
+    updatePathway((current) => activateVersion(current, id));
+    setCanDelete(false);
+    window.requestAnimationFrame(() => {
+      void flow.fitView({ padding: 0.2, maxZoom: 1, duration: 200 });
+    });
   }
 
   function requestPlace(course: Course) {
@@ -253,11 +299,11 @@ function PathwayShell() {
   }
 
   const removeCourseNode = useCallback((id: string) => {
-    updatePathway((current) => ({
-      ...current,
-      nodes: current.nodes.filter((node) => node.id !== id),
-      edges: current.edges.filter((edge) => edge.source !== id && edge.target !== id),
-    }));
+    updatePathway((current) =>
+      withActive(current, ({ nodes: currentNodes, edges }) =>
+        graphWithoutNodes(currentNodes, edges, new Set([id])),
+      ),
+    );
     setCanDelete(false);
   }, []);
 
@@ -271,10 +317,8 @@ function PathwayShell() {
         genEd: draft.genEd,
         requirements: draft.requirements,
       };
-      updatePathway((current) => ({
-        ...current,
-        courses: current.courses.map((course) => (course.id === existing.id ? next : course)),
-        nodes: current.nodes.map((node) => {
+      const rewrite = (currentNodes: PathwayNode[]) =>
+        currentNodes.map((node) => {
           if (node.type !== "course" || node.data.courseId !== existing.id) return node;
           return {
             ...node,
@@ -286,8 +330,19 @@ function PathwayShell() {
               requirements: [...next.requirements],
             },
           };
-        }),
-      }));
+        });
+      updatePathway((current) => {
+        const nodes = rewrite(current.nodes);
+        return {
+          ...current,
+          courses: current.courses.map((course) => (course.id === existing.id ? next : course)),
+          nodes,
+          versions: current.versions.map((version) => ({
+            ...version,
+            nodes: version.id === current.activeVersionId ? nodes : rewrite(version.nodes),
+          })),
+        };
+      });
     } else {
       updatePathway((current) => ({
         ...current,
@@ -298,17 +353,25 @@ function PathwayShell() {
   }
 
   function removeCourse(course: Course) {
-    updatePathway((current) => {
+    const strip = (currentNodes: PathwayNode[], currentEdges: PathwayEdge[]) => {
       const removed = new Set(
-        current.nodes
+        currentNodes
           .filter((node) => node.type === "course" && node.data.courseId === course.id)
           .map((node) => node.id),
       );
+      return graphWithoutNodes(currentNodes, currentEdges, removed);
+    };
+    updatePathway((current) => {
+      const active = strip(current.nodes, current.edges);
       return {
         ...current,
         courses: current.courses.filter((item) => item.id !== course.id),
-        nodes: current.nodes.filter((node) => !removed.has(node.id)),
-        edges: current.edges.filter((edge) => !removed.has(edge.source) && !removed.has(edge.target)),
+        nodes: active.nodes,
+        edges: active.edges,
+        versions: current.versions.map((version) => {
+          const graph = version.id === current.activeVersionId ? active : strip(version.nodes, version.edges);
+          return { ...version, nodes: graph.nodes, edges: graph.edges };
+        }),
       };
     });
     setDialog({ mode: "closed" });
@@ -389,18 +452,24 @@ function PathwayShell() {
     if (selectedNodes.length === 0 && selectedEdges.length === 0) return false;
     const nodeIds = new Set(selectedNodes.map((node) => node.id));
     const edgeIds = new Set(selectedEdges.map((edge) => edge.id));
-    updatePathway((current) => ({
-      ...current,
-      nodes: current.nodes.filter((node) => !nodeIds.has(node.id)),
-      edges: current.edges.filter(
-        (edge) => !edgeIds.has(edge.id) && !nodeIds.has(edge.source) && !nodeIds.has(edge.target),
-      ),
-    }));
+    updatePathway((current) =>
+      withActive(current, ({ nodes: currentNodes, edges }) => {
+        const cleared = graphWithoutNodes(currentNodes, edges, nodeIds);
+        return {
+          nodes: cleared.nodes,
+          edges: cleared.edges.filter((edge) => !edgeIds.has(edge.id)),
+        };
+      }),
+    );
     setCanDelete(false);
     return true;
   }, [flow]);
 
-  const dialogOpen = dialog.mode !== "closed" || resetOpen || notice !== null || bucketPrompt !== null;
+  const dialogOpen =
+    dialog.mode !== "closed" || resetOpen || notice !== null || bucketPrompt !== null || replacePrompt !== null;
+  const satisfied = satisfiedByPlan(nodes);
+  const activeVersion = pathway.versions.find((version) => version.id === pathway.activeVersionId);
+  const planIsChosen = pathway.chosenVersionId === pathway.activeVersionId;
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -420,18 +489,57 @@ function PathwayShell() {
 
   return (
     <div className="flex h-dvh flex-col bg-white text-stone-900">
-      <header className="flex h-11 shrink-0 items-center gap-2 border-b border-stone-200 px-2">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="md:hidden"
-          onClick={() => setSidebarOpen(true)}
-        >
-          Courses
-        </Button>
-        <h1 className="shrink-0 text-[13px] font-semibold tracking-tight">PIT Pathways</h1>
-        <div className="toolbar-scroll ml-auto flex min-w-0 items-center gap-1 overflow-x-auto py-1">
+      <header className="flex shrink-0 flex-col gap-1 border-b border-stone-200 px-2 py-1.5">
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="md:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
+            Courses
+          </Button>
+          <h1 className="shrink-0 text-[13px] font-semibold tracking-tight">PIT Pathways</h1>
+          <label className="flex items-center gap-1 text-[11px] font-medium text-stone-500">
+            Plan
+            <select
+              aria-label="Plan"
+              className="h-7 rounded-md border border-stone-200 bg-white px-1.5 text-xs font-medium text-stone-800"
+              value={pathway.activeVersionId}
+              onChange={(event) => switchVersion(event.target.value)}
+            >
+              {pathway.versions.map((version) => (
+                <option key={version.id} value={version.id}>
+                  {version.name}
+                  {version.id === pathway.chosenVersionId ? " · chosen" : ""}
+                </option>
+              ))}
+            </select>
+          </label>
+          <Button type="button" variant="outline" size="sm" onClick={newVersion}>
+            New version
+          </Button>
+          <Button type="button" variant="outline" size="sm" disabled={planIsChosen} onClick={chooseThisPlan}>
+            {planIsChosen ? "Chosen" : "Choose this plan"}
+          </Button>
+          <div
+            className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-1 rounded-lg border border-stone-200 bg-stone-50 px-2 py-1"
+            aria-label={
+              activeVersion
+                ? `Requirements ${activeVersion.name} satisfies`
+                : "Requirements this plan satisfies"
+            }
+          >
+            <span className="text-[11px] font-semibold tracking-wide text-stone-500">Satisfies</span>
+            {satisfied.genEd.length === 0 && satisfied.requirements.length === 0 ? (
+              <span className="text-[11px] text-stone-400">None yet</span>
+            ) : (
+              <PathwayChips genEd={satisfied.genEd} requirements={satisfied.requirements} />
+            )}
+          </div>
+        </div>
+        <div className="toolbar-scroll flex min-w-0 items-center justify-end gap-1 overflow-x-auto">
           <Button
             type="button"
             variant="outline"
@@ -520,6 +628,30 @@ function PathwayShell() {
           />
         </SheetContent>
       </Sheet>
+
+      <Dialog open={replacePrompt !== null} onOpenChange={(open) => { if (!open) setReplacePrompt(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>One course per bucket</DialogTitle>
+            <DialogDescription>
+              {replacePrompt
+                ? `${replacePrompt.bucket} already has ${replacePrompt.occupantNumber}. This plan can hold one course in each bucket. Replace it here, or keep this plan and try ${replacePrompt.course.number} in a new version.`
+                : ""}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-2">
+            <Button type="button" onClick={replaceInPlan}>
+              Replace in this plan
+            </Button>
+            <Button type="button" variant="outline" onClick={branchWithCourse}>
+              New version
+            </Button>
+            <Button type="button" variant="ghost" onClick={() => setReplacePrompt(null)}>
+              Cancel
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={bucketPrompt !== null} onOpenChange={(open) => { if (!open) setBucketPrompt(null); }}>
         <DialogContent>
