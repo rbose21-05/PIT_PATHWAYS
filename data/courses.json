@@ -1,0 +1,740 @@
+[
+  {
+    "id": "anthro-212",
+    "number": "ANTHRO 212",
+    "title": "Science, Technology and Society",
+    "credits": 4,
+    "description": "This course explores scientific and technical systems that permeate our lives. By way of facial recognition, IQ tests, vaccine protocols, hydroelectric dams, and other systems, we will focus on the all-too-human questions embedded in processes of scientific innovation and technological development. Together, we will address the following: What makes something a scientific fact? Who benefits and who is harmed by emerging platforms? How do social, political, and economic inequities shape technology and vice-versa? Can we engineer alternate futures? There are no prerequisites. Introductory experience in anthropology (e.g. 100, 104, 105) or an allied discipline (e.g. History, Sociology, Geography, WGSS) is an asset, but not required to do well. (Gen. Ed. SB, DG)",
+    "prerequisites": "None. Introductory anthropology, or a related course in history, sociology, geography, or women, gender, and sexuality studies, is useful and not required.",
+    "enrollment": "None stated.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [
+      "SB",
+      "DG"
+    ],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "art-394ei",
+    "number": "ART 394EI",
+    "title": "Ethics of Design and Technology",
+    "credits": 3,
+    "description": "ART 394EI is on the May 2026 PIT list and on the Certificate in AI in the Humanities and Fine Arts menu as a 3-credit classroom course. It is not in the 2025–26 Art undergraduate guide, and it has not appeared on the public Five College schedule, so a description and a prerequisite list were not available.",
+    "prerequisites": "Not published.",
+    "enrollment": "Not published.",
+    "buckets": [
+      "Public Interest",
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [
+      "IE (Art majors)"
+    ],
+    "verified": false,
+    "unverifiedReason": "It is not in the 2025–26 Art undergraduate guide, and it has not appeared on the public Five College schedule, so a description and a prerequisite list were not available. No general education designation was published with this course."
+  },
+  {
+    "id": "comm-122",
+    "number": "COMM 122",
+    "title": "Introduction to Media Industries and Institutions",
+    "credits": 3,
+    "description": "This course is an introduction to the process of media production, with a special focus on the institutional forces (i.e. market structures, industry practices, law and regulation, citizen activism, and audience dynamics) that shape the content of electronic media. We will consider a variety of historical, technological, economic, cultural, legal, political, and ethical factors that influence the production, distribution, and consumption of media texts in digital environments. We will take a case study approach, using examples of the U.S. television, film, news, and music industries to examine the dynamic interplay between national media systems and global media markets.",
+    "prerequisites": "None stated.",
+    "enrollment": "Open to first-year students, sophomores, and juniors. Communication majors must complete 3 of COMM 118, 121, 122, 125, and 140. This course is one of those five.",
+    "buckets": [
+      "Public Interest",
+      "Social Governance"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "comm-208",
+    "number": "COMM 208 / PUBPOL 208 / CICS 208 / SPP 208",
+    "title": "Defending Democracy in a Digital World",
+    "credits": 4,
+    "description": "This course explores the significance of the public sphere - from pamphlets, newspapers and letters to radio, television, the internet and social media - and its relationship to participatory, democratic society. Moving back and forth between the history of the public sphere and contemporary debates about the tensions between media and democracy, students will learn why democracies prescribe protected roles of the media, how media manipulation plays a role in politics, and how media spaces serve as deliberative spaces. Students will write short reaction papers to the readings, which will be used to shape class discussions, and a longer final paper, focused on applying the theories of the public sphere to regulation of contemporary online spaces. (Gen. Ed. SB)",
+    "prerequisites": "None stated.",
+    "enrollment": "None stated on the Communication section.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [
+      "SB"
+    ],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "comm-287",
+    "number": "COMM 287",
+    "title": "Advertising as Social Communication",
+    "credits": 4,
+    "description": "This course looks at advertising from the viewpoint of social theory (that is, of how we can understand advertising's broad political, economic, social, and cultural role in modern society). The course will broadly examine the social role of advertising in consumer societies with a central focus its relationship to: the construction of individual identity, the quest for happiness; the evolving environmental crisis based on depleting resources and climate change; the process of globalization; the commercialization of childhood; the definition of health and wellness; and the crisis of financial debt.",
+    "prerequisites": "None stated.",
+    "enrollment": "None stated. The latest public section was in person, with three on-campus exams.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "comm-377",
+    "number": "COMM 377",
+    "title": "Social Media in Everyday Life",
+    "credits": 3,
+    "description": "Taking a comparative and grounded approach, this class explores the diverse and transformative consequences of social media as they become ubiquitous and taken for granted in our everyday lives. It takes as a starting point people's everyday engagement with social media and analyzing the cultural patterns and social outcomes of practices such as memes, selfies, Facebook friending, social media fundraising, and digital mourning. Drawing from global case studies from QQ and WeChat in China to dating apps in the Philippines to webcam in Trinidad, the class analyzes how \"logics\" and values of social media infrastructures interact with old and enduring cultural norms that reshape contemporary sociality, kinship and intimacy. NOTE: The 2025–26 undergraduate guide lists COMM 377, but no section has been offered under that number on the public schedule. The description here is from Fall 2019, when the same title was taught as special topics COMM 397SE. Read the current SPIRE description before you count on this wording.",
+    "prerequisites": "None stated on the last published section.",
+    "enrollment": "That section was open to junior and senior Communication majors only.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": false,
+    "unverifiedReason": "Read the current SPIRE description before you count on this wording."
+  },
+  {
+    "id": "comm-409",
+    "number": "COMM 409",
+    "title": "Communication, Technology, and Work",
+    "credits": 3,
+    "description": "This course will examine the different ways that communication and digital technologies are shaping notions of work and labor. We will engage with ongoing debates on topics such as the sharing economy (e.g., Uber/Lyft driving), microwork (e.g., Amazon Mechanical Turk), microcelebrity (e.g. YouTube stars and Instagram influencers), tech entrepreneurship both in Silicon Valley and other parts of the world, as well as the work that goes into making popular consumer technologies like the iPhone. By the end of the course, you should have a critical understanding of the economic and social forces underlying shifts in digital labor, communication, technology, and work. The coursework includes digital assignments, reading responses, and a research paper.",
+    "prerequisites": "None stated.",
+    "enrollment": "Open to junior and senior Communication majors. Other majors need permission from the instructor.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "comm-427",
+    "number": "COMM 427",
+    "title": "Media Literacy",
+    "credits": 4,
+    "description": "This course will provide an overview of the theories, tensions, and debates within the study of critical media literacy as it applies to K-12 classrooms and community organizations. Current practical and analytic research in this area will be examined. This course has a required civic engagement component; students will work with and on behalf of youth in the community on media literacy-related projects. This course is one of the required courses for the Media Literacy Certificate and satisfies the Integrative Experience requirement for BA-Comm majors.",
+    "prerequisites": "COMM 121 or COMM 122.",
+    "enrollment": "Open to junior and senior Communication majors.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [],
+    "requirements": [
+      "IE (Communication majors)"
+    ],
+    "verified": true
+  },
+  {
+    "id": "comm-540",
+    "number": "COMM 540 / SPP 540",
+    "title": "Internet Governance and Information Policy",
+    "credits": 3,
+    "description": "This class introduces students to actors, institutions and public interest battles fought nationally, regionally, and globally for the control of the Internet. It considers the interaction between law, technological design, and policy solutions in shaping infrastructure, code, and content of the global web. Topics covered in the course include history of Internet policy; the relationship between technical architecture and law; digital inequalities and social inclusion; freedom of expression and intellectual property; surveillance, privacy, and cybersecurity; trade policy, data protection and social media governance in the era of datafication. Readings and online discussions with research partners, policy advocates and experts will expose students to diverse perspectives and first-hand information on these debates.",
+    "prerequisites": "None stated beyond class standing.",
+    "enrollment": "**Open to seniors and graduate students. Other students can ask the instructor for permission.",
+    "buckets": [
+      "Public Interest",
+      "Social Governance"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "cics-305",
+    "number": "CICS 305",
+    "title": "Social Issues in Computing",
+    "credits": 3,
+    "description": "This class satisfies the Junior Year Writing requirement by providing instruction in several different technical communication genres, including research writing and science writing. Writing contexts will include writing for municipal, public, and professional audiences. Through our writing, we will engage with computing topics and challenges facing our current global context and explore various impacts of computers on modern society. Students will produce approximately 20-25 pages of polished written work over the course of the semester.",
+    "prerequisites": "ENGLWRIT 112 with a grade of C or better, or an English Writing Exam waiver, plus COMPSCI 220, COMPSCI 230, and either COMPSCI 240 or COMPSCI 250. Bachelor of Arts in Computer Science students need 3 of those 4 core courses with a grade of D or better. SPIRE only sees ENGLWRIT 112 when it was taken at UMass Amherst, so AP credit, transfer credit, or a waiver needs an override.",
+    "enrollment": "Junior and senior Computer Science or Informatics primary majors. Secondary majors take Junior Year Writing in the primary major. Odd-numbered lectures are for Computer Science; even-numbered lectures are for Informatics.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [],
+    "requirements": [
+      "JYW"
+    ],
+    "verified": true
+  },
+  {
+    "id": "compsci-508",
+    "number": "COMPSCI 508",
+    "title": "Ethical Considerations in Computing",
+    "credits": 3,
+    "description": "Informed by critical, cultural, social and technological theories, texts and ideas covered in this course target the intersections of computing and ethical reasoning. Students will be presented with questions to ask, possible theories to draw from, and best practices to consult in considering the ethical impacts of computing. Course materials reflect diversity in authorship, perspective, and epistemology. This course counts as an Elective for the CS and INFORM Majors.",
+    "prerequisites": "CICS 305 with a grade of C or better. Computer Science or Informatics majors who completed a different Junior Year Writing course with a C or better can be considered.",
+    "enrollment": "Junior and senior Computer Science or Informatics majors. Lecture 01 is for undergraduates and lecture 02 is for graduate students.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [],
+    "requirements": [
+      "CS elective"
+    ],
+    "verified": true
+  },
+  {
+    "id": "ec-eng-150",
+    "number": "E&C-ENG 150",
+    "title": "Making Better Decisions by Humans and AI",
+    "credits": 4,
+    "description": "This course covers decision making under uncertainty, focusing on topics such as evolutionary psychology, human biases, probabilistic thinking, risk taking, artificial intelligence, AI biases and algorithmic oppression. The skills learned in this class can aide students in decision making at both personal and societal levels. They can help students recognize cognitive and algorithmic biases and comprehend the social implications of these biases. Examples from everyday decisions, business/finance, economics/policy making, sports, and AI decision making are discussed. (Gen. Ed. SB, DU)",
+    "prerequisites": "No course prerequisite is stated.",
+    "enrollment": "Recent sections are closed to general enrollment. Fall 2026 is limited to the Engineering Better Decisions residential academic program in Leach Hall. Spring 2026 is limited to first-year students and sophomores admitted to the iCons program on the AI and the Future of Work track.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [
+      "SB",
+      "DU"
+    ],
+    "requirements": [],
+    "verified": false,
+    "unverifiedReason": "The Fall 2026 registrar gen ed list does not include E&C-ENG 150, so confirm the designation on the section you join."
+  },
+  {
+    "id": "japanese-383",
+    "number": "JAPANESE 383",
+    "title": "Technology and Generative AI for Language Learning, Teaching, and Communication",
+    "credits": 3,
+    "description": "The PIT list shortens the title to “Technology and AI for Language Learning.” The Certificate in AI in the Humanities and Fine Arts lists Japanese 383 under the longer title, 3 credits, classroom. It is not on the public Five College schedule, so a description and prerequisites were not available.",
+    "prerequisites": "Not published.",
+    "enrollment": "Not published.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": false,
+    "unverifiedReason": "It is not on the public Five College schedule, so a description and prerequisites were not available. No general education designation was published with this course."
+  },
+  {
+    "id": "legal-391c",
+    "number": "LEGAL 391C",
+    "title": "No Place to Hide: Law and Politics of Information and Data",
+    "credits": 3,
+    "description": "Surveillance, databases, privacy, and the production of data images are the backdrop for this course. The social and political implications of various data images, and the law's role in structuring the terrain and the ways in which data images can be manipulated and acted upon, is the focus. Potential topics include: Data images and identity; Data matching and mining in the construction of those images; Demographic / profiling industry and how it relates to marketing, public policy, and policing - security; National ID's; Workplace bio-metric and background checks; Private and state surveillance.",
+    "prerequisites": "LEGAL 250",
+    "enrollment": "Sophomore, junior, and senior Legal Studies majors. The course opens to sophomores after junior and senior registration.",
+    "buckets": [
+      "Public Interest",
+      "Social Governance"
+    ],
+    "genEd": [],
+    "requirements": [
+      "IE (Legal Studies majors)"
+    ],
+    "verified": true
+  },
+  {
+    "id": "legal-494di",
+    "number": "LEGAL 494DI",
+    "title": "Environmental and Public Policy Dispute Resolution",
+    "credits": 4,
+    "description": "This course examines multiparty disputes involving topics such as land use management, water rights, e-healthcare, and pollution remediation. We explore dispute resolution's role in enhancing democratic participation in decision making of public import. Satisfies the Integrative Experience requirement for BA-Legal majors.",
+    "prerequisites": "None stated.",
+    "enrollment": "Junior and senior Legal Studies majors. Other majors need the instructor’s consent.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [],
+    "requirements": [
+      "IE (Legal Studies majors)"
+    ],
+    "verified": true
+  },
+  {
+    "id": "phil-163",
+    "number": "PHIL 163",
+    "title": "Business Ethics",
+    "credits": 4,
+    "description": "Survey of basic concepts and theories of ethics. Consideration of specific ethical problems that businesses and business people are apt to face.",
+    "prerequisites": "None stated.",
+    "enrollment": "The regular Fall 2026 section has no enrollment limit in the notes. A separate Global Launch section is reserved for the Dublin program.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [
+      "AT"
+    ],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "phil-175",
+    "number": "PHIL 175",
+    "title": "Introduction to the Philosophy of Technology",
+    "credits": 4,
+    "description": "This course provides an introduction to philosophical and ethical issues surrounding technology, with a focus on new and emerging technologies and their relation to and impacts on self, society, and the environment. General topics may include: What is technology and how does it evolve? What is the relationship between science and technology? How does technology affect and structure individual and social life? Specific technologies and questions discussed may include: Should we use geo-engineering to address climate change? Is it morally permissible to alter the human genome? How does the internet and social media impact our identities? Is it ever wrong to have sex with a robot or in a video game? Do the risks of advanced AI justify investing in such technology? Who is responsible for a crash involving a driverless car? The course will focus on developing students' skills in critical reasoning and analysis while investigating philosophical questions concerning technology. (Gen. Ed. SB)",
+    "prerequisites": "None stated.",
+    "enrollment": "None stated.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [
+      "SB"
+    ],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "polisci-276",
+    "number": "POLISCI 276",
+    "title": "AI-Pocalypse or Techno-Utopia",
+    "credits": 4,
+    "description": "This course aims to introduce student to normative, ethical, and philosophical debates around the place of science and technology in human societies. Political theory brings a specific set of questions, problems, approaches, and conceptual tools for thinking about power, authority, human nature, the human good, and justice, all of which bear on the centrality of science and technology in social life. Political theory also approaches these questions through a wide variety of forms and genres of thought: historical analysis, normative philosophy, critical approaches to power, and even literature. The range of topics that could be explored in a class about the political theory of science and technology are vast and more than could be covered in any one semester. But course topics will include the following: the history of anxiety around the place of technology in human life; technological determinist theories of history such as Marxism; techno-utopian and techno-dystopian ideologies; theories of the proper political and legislative authority of scientists and other experts; visions of freedom from labor and drudgery through technology; science as the supreme authority in modern secularism; philosophical discussions of the boundary between human nature and technology; considerations of the ethical limits of technological process (weapons, AI, environmental harm); techno-authoritarian political ideologies; surveillance and politics; the place of big data in governing populations; the ethics of modifying human nature and transhumanist visions; the effect of digital technologies on democracy and the public sphere; and Artificial Intelligence and its discontents. (Gen. Ed. SB)",
+    "prerequisites": "None stated.",
+    "enrollment": "None stated.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [
+      "SB"
+    ],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "uww-310",
+    "number": "UWW 310",
+    "title": "Experiential Reflections of the Technological World",
+    "credits": 4,
+    "description": "Students will examine the principles and frameworks of technology as a way to better understand their professional and other life experience. This course meets the Integrative Experience (IE) general education requirement for the University of Massachusetts. Prerequisite: UWW 305 taken prior or concurrently. 4 credits.",
+    "prerequisites": "UWW 305, taken before this course or at the same time.",
+    "enrollment": "Part of the University Without Walls Interdisciplinary Studies core. Offered in the fall.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [],
+    "requirements": [
+      "IE"
+    ],
+    "verified": true
+  },
+  {
+    "id": "uww-391a",
+    "number": "UWW 391A",
+    "title": "Being Human in an AI World",
+    "credits": 3,
+    "description": "A narrative catalog description was not published in the Five College schedule, the 2025–26 undergraduate guide, or the UWW handbook. The sample online course list titles it “Seminar- Being Human in an AI World,” 3 credits, last offered Summer 2026.",
+    "prerequisites": "None. The UWW sample online course list marks the prerequisite column “No.”",
+    "enrollment": "Not stated beyond the seminar number.",
+    "buckets": [
+      "Public Interest"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": false,
+    "unverifiedReason": "A narrative catalog description was not published in the Five College schedule, the 2025–26 undergraduate guide, or the UWW handbook. No SB, DU, DG, or IE designation was published."
+  },
+  {
+    "id": "cics-590p",
+    "number": "CICS 590P / SPP 590P",
+    "title": "Technology Policy and Innovation to Serve the Common Good",
+    "credits": 3,
+    "description": "In this course, we will introduce Public Interest Technology, innovation, and relevant regulatory frameworks to provide a foundation to explore the thoughtful design of technology that can serve society while remaining safe for all users and stakeholders. The course begins with examining the core values of public interest technology, such as fairness, transparency, accountability, and inclusivity. We will then review foundational concepts around innovation and strategies, along with an overview of technology governance. An overview of product development models, focusing on Agile product development will be presented along with a presentation of tech governance within an Agile framework. We will then analyze case studies where technologies have either succeeded or failed to uphold these values, examining the societal impact of emerging technologies like artificial intelligence (AI), self-driving cars, digital platforms, and data-driven systems. Throughout the semester, guest lectures from leaders in the fields of technology policy, innovation, and governance will offer insights into how you can bridge the gap between regulatory goals and technological creativity in your future careers. This course counts as an Elective for the CS and INFORM Majors.",
+    "prerequisites": "CICS 305 with a grade of C or better. Computer Science or Informatics majors who completed another Junior Year Writing course with a C or better can be considered.",
+    "enrollment": "Junior and senior Computer Science or Informatics majors. Lecture 01 is for undergraduates and lecture 02 is for graduate students.",
+    "buckets": [
+      "Social Governance"
+    ],
+    "genEd": [],
+    "requirements": [
+      "CS elective"
+    ],
+    "verified": true
+  },
+  {
+    "id": "comm-339",
+    "number": "COMM 339",
+    "title": "Media and Public Policy",
+    "credits": 3,
+    "description": "This course provides students with media policy literacy and critical knowledge on evolving debates on media and technology policy in the United States, and its implication for democracy and the development of media systems. We will examine laws, policies and regulations affecting legacy and digital media, including universal service, net neutrality, free speech, access to information, advertising, online privacy, data protection and intellectual property. Students are introduced to practices of public interest advocacy and media technology policy-making, identifying stakeholders and vested interests in this process. By the successful completion of this course, students will be able to: Explain how media law and media policy are constituted, and analyze substantive issues on the contemporary media and technology policy agenda in the U.S.; Understand the socio-political relations and political-economic context that surround key media policy debates; Recognize how different forms of regulation shape media institutions, identifying the tensions between commercialism and different public interest goals; Understand rights and responsibilities of users/ consumers/ producers of media messages; Develop understanding and skills on different genres of policy writing and communication.",
+    "prerequisites": "COMM 12 0R COM 222. Students who do not meet it can ask the instructor for permission.",
+    "enrollment": "None beyond the prerequisite.",
+    "buckets": [
+      "Social Governance"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "compsci-363",
+    "number": "COMPSCI 363",
+    "title": "Computer Crime Law",
+    "credits": 3,
+    "description": "A study, analysis, and discussion of the legal issues related to crimes involving computers and networks, including topical actions by dissidents and governments. We will also study the technologies of forensic investigation, intelligence gathering, privacy enhancement, and censorship resistance. Our main legal topics will include recent and important case law, statutes, and constitutional clauses concerning authorization, access, search and seizure, wiretaps, the right to privacy, and FISA. Our technology topics will include methods of investigation and resistance in the context of the Internet and Cellular networks. Students are assumed to have no background in legal concepts. All students will be required to complete substantial legal readings, complete significant written analysis of rulings, learn about technologies in detail, and participate in lively class discussion.",
+    "prerequisites": "COMPSCI 230, and ENGLWRIT 112 with a grade of C or better or a College Writing exemption.",
+    "enrollment": "Junior and senior Computer Science majors.",
+    "buckets": [
+      "Social Governance"
+    ],
+    "genEd": [],
+    "requirements": [
+      "CS elective"
+    ],
+    "verified": true
+  },
+  {
+    "id": "compsci-563",
+    "number": "COMPSCI 563",
+    "title": "Internet Law and Policy",
+    "credits": 3,
+    "description": "This course is meant for those looking for practical legal knowledge for use in Internet related endeavors. This course provides basic legal knowledge for Internet related legal issues with a focus on practical information for use by computer professionals. Topics covered are basics of the internet, basics of law and contract law, substantive laws, intellectual property law, basic ethical dealings, dealing with third parties, and policy issues.",
+    "prerequisites": "COMPSCI 311, COMPSCI 383, or COMPSCI 360 (previously 460), with a grade of C or better.",
+    "enrollment": "Junior and senior Computer Science students for the undergraduate lecture. A separate lecture is for eligible graduate students.",
+    "buckets": [
+      "Social Governance"
+    ],
+    "genEd": [],
+    "requirements": [
+      "CS elective"
+    ],
+    "verified": true
+  },
+  {
+    "id": "journal-385",
+    "number": "JOURNAL 385 / JOURNAL 390A",
+    "title": "AI and the News: Power, Adaptation, and Democratic Futures",
+    "credits": 4,
+    "description": "Artificial Intelligence is rapidly transforming the ways we produce, distribute, and engage with news, raising important questions about the futures of both journalism and democratic life. This course critically examines how algorithmic systems shape public discourse, influence civic participation, and reconfigure power dynamics in society via an examination of news and journalism. Through a range of readings, case studies, and discussions, students will interrogate technological hype, resistance, and adaptation while evaluating and imagining potential futures for news and democracy in a world that is being increasingly shaped by AI. (Gen. Ed. SB, DG)",
+    "prerequisites": "None. The department announced the first offering with no prerequisites.",
+    "enrollment": "Open to students from any major.",
+    "buckets": [
+      "Social Governance"
+    ],
+    "genEd": [
+      "SB",
+      "DG"
+    ],
+    "requirements": [],
+    "verified": false,
+    "unverifiedReason": "JOURNAL 385 is not on the Fall 2026 registrar gen ed list, so confirm the designation in SPIRE."
+  },
+  {
+    "id": "legal-342",
+    "number": "LEGAL 342",
+    "title": "Machine Bias and the Law",
+    "credits": 3,
+    "description": "In this course, we will explore the political, legal, and social implications of Big Data, artificial intelligence, and the increasing reliance on automated, machine learning algorithms across many different decision-making contexts, with a particular focus on the manifestations of bias in computationally or machine-based decisions. The course will address both the promise and perils of data-based, machine decision-making as well as the multiplicity of ways in which it already influences our daily lives. Topics will include predictive policing, privacy concerns on social media and in consumer choice, Facebook news recommendation and free speech, the transformation of the legal profession, racial and gender discrimination in language, and health care policy. Satisfies the Integrative Experience requirement for Legal Studies majors.",
+    "prerequisites": "LEGAL250.",
+    "enrollment": "Junior and senior Legal Studies primary majors.",
+    "buckets": [
+      "Social Governance"
+    ],
+    "genEd": [],
+    "requirements": [
+      "IE (Legal Studies majors)"
+    ],
+    "verified": true
+  },
+  {
+    "id": "legal-368",
+    "number": "LEGAL 368",
+    "title": "Alternative Dispute Resolution",
+    "credits": 3,
+    "description": "This course explores alternative forms of dispute resolution (ADR)--mediation, arbitration, negotiation, and online dispute resolution in comparison to the judicial system. We examine their usage over the past 300 years and relevance today. Throughout the course we investigate the contributions and concerns raised by the application of technologies including artificial intelligence for conflict resolution. What are the benefits and drawbacks for using ADR rather than court for commercial, environmental, family, labor, educational, and community disputes? What ethical questions emerge when using AI to facilitate or resolve disputes? Whose interests are served by ADR? We will also briefly explore international dispute resolution and consider its similarities and differences to ADR in this country.",
+    "prerequisites": "LEGAL 101",
+    "enrollment": "Legal Studies majors. Students in other majors can ask the instructor to enroll.",
+    "buckets": [
+      "Social Governance"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "legal-390c",
+    "number": "LEGAL 390C",
+    "title": "Privacy and Security Compliance",
+    "credits": null,
+    "description": "LEGAL 390C is on the May 2026 PIT list, but it is not in the 2025–26 Legal Studies undergraduate guide and it has not appeared on the public schedule. Nearby courses such as LEGAL 346, Data Surveillance, Privacy, and the Law, and LEGAL 390A, The Ethics of AI, are different courses.",
+    "prerequisites": "LEGAL 101",
+    "enrollment": "Not published.",
+    "buckets": [
+      "Social Governance"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": false,
+    "unverifiedReason": "No general education designation was published."
+  },
+  {
+    "id": "ce-engin-418",
+    "number": "CE-ENGIN 418",
+    "title": "Intelligent Transportation Systems",
+    "credits": 3,
+    "description": "A critical review and analysis of intelligent transportation systems (ITS) in the management and operation of surface transportation facilities; selected ITS technologies reviewed include wireless and wire communication systems, sensors, information processing techniques, automated location systems, and innovative computational methods; emphasis is placed on several ITS user services including traffic control, en-route and pre-trip information, electronic payment, and fleet management as they pertain to surface transportation facilities in large metropolitan areas as well as small urban and rural communities.",
+    "prerequisites": "CE-ENGIN 310.",
+    "enrollment": "None beyond the prerequisite.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "ce-engin-470",
+    "number": "CE-ENGIN 470",
+    "title": "GIS for Engineers",
+    "credits": 3,
+    "description": "Introduction to fundamental principles and concepts necessary to carry out meaningful and appropriate geographic analysis with geographic information science (GIS). Reinforcement of key issues in GIS such as geographic coordinate systems, map projections, spatial analysis, use of remotely sensed data, and visualization of spatial data. Laboratory exercises use database query, database manipulation, and spatial analysis to address problems in hydrology, water treatment, renewable energy, and transportation with an emphasis on engineering design. Students will gain familiarity with the leading commercial and open-source GIS platforms.",
+    "prerequisites": "None stated.",
+    "enrollment": "None stated on the Spring 2025 section.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "comm-408",
+    "number": "COMM 408",
+    "title": "Survey of Digital Behavioral Data",
+    "credits": 3,
+    "description": "Algorithms and data increasingly power our private and civic life. Companies, nonprofits, and governments have invested heavily in data mining, the bulk collection of user behavior data from web platforms to understand public opinion and to forecast trends. A lot of fashionable terms, such as artificial intelligence and big data, are being thrown around these days. The public and regulators also become increasingly wary of the dark side of algorithms - the skepticism has culminated after the Cambridge Analytica scandal and the revelation of alleged foreign propaganda in the US through social media. This course gives a practical understanding of how data mining and algorithms work. You will learn R, a programming language and obtain marketable computational skills in data analytics and visualization, as well as evidence-based critical perspectives on the algorithmic society we live in.",
+    "prerequisites": "None stated.",
+    "enrollment": "Junior and senior Communication majors. Other students need the instructor’s permission.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "comm-494li",
+    "number": "COMM 494LI",
+    "title": "The Social Life of Algorithms",
+    "credits": 3,
+    "description": "Algorithmic systems are at the center of today's digital world, and mediate communication processes in areas as diverse as social media, journalism, healthcare, and governments. How do algorithmic systems capture, represent, and transmit information about everyday interactions? How do they shape, and are shaped by, social, cultural, and political life? What kind of new issues and concerns arise from their ubiquitous use? This course provides a critical introduction to algorithmic systems, and how they relate to issues of communication, power and inequalities in society. In addition to reading responses and a midterm essay, students will complete a research project on an algorithmic system of their choice to unpack how they are constructed and used in everyday life. This course serves as an Integrative Experience (IE) requirements for BA-COMM majors.",
+    "prerequisites": "None stated.",
+    "enrollment": "Junior and senior Communication majors.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [
+      "IE (Communication majors)"
+    ],
+    "verified": true
+  },
+  {
+    "id": "compsci-365",
+    "number": "COMPSCI 365",
+    "title": "Digital Forensics",
+    "credits": 3,
+    "description": "This course offers a broad introduction to the forensic investigation of digital devices. We cover the preservation, recovery, harvesting, and courtroom presentation of information from file systems, operating systems, networks, and media files. The primary goal of the class is to understand why and from where information is recoverable in these systems. We also cover relevant issues from law, privacy, and current events.",
+    "prerequisites": "COMPSCI 230 with a grade of C or better.",
+    "enrollment": "Sophomore, junior, and senior Computer Science and Informatics students. Juniors and seniors register first. Sophomores who meet the prerequisite can be opened later if seats remain, and should waitlist rather than request an override before that.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [
+      "CS elective"
+    ],
+    "verified": true
+  },
+  {
+    "id": "compsci-524",
+    "number": "COMPSCI 524",
+    "title": "Health Informatics and Data Science",
+    "credits": 3,
+    "description": "This course aims to instruct key components related to Clinical Health Informatics and practical data science tools that can be applied to analyze health data. More specifically, this course aims to teach students 1) how to understand and process complex real-world health data, 2) theoretical fundamentals of quantitative analysis of clinical health data, and 3) how to apply the theory and tools to analyze health data. Following an overview of the clinical health informatics industry, the course covers a broad range of introductory topics, including the structure of current health care systems, types of health data, the theory and practical use of quantitative analytic methodologies, and ethics related to healthcare. More specifically, this course will introduce key health informatics technologies and standards, including electronic health records, medical claims data, imaging data, free-text clinical notes, patient-reported outcomes, traditional and machine learning-based analytic algorithms, data visualization, and clinical research and experimental procedures. Note, however, that the course is not designed to introduce new types of machine learning or artificial intelligence algorithms for health-related data.",
+    "prerequisites": "COMPSCI 240 or STATISTC 515 with a grade of C or better. Knowledge of health data or medicine is not required.",
+    "enrollment": "Junior and senior Computer Science majors for the undergraduate lecture. Informatics majors should take INFO 324 instead. This course does not count toward the Informatics major.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [
+      "CS elective"
+    ],
+    "verified": true
+  },
+  {
+    "id": "educ-312",
+    "number": "EDUC 312",
+    "title": "Teaching and Learning with Technology",
+    "credits": 3,
+    "description": "In the digital era, technology is everywhere, smart devices are talking to one another, virtual reality can transport students across the world, social media is spreading information (fake and real) at a rapid pace, YouTube is the go-to tool for informal learning, and anyone, anywhere can create or remix multimedia. This project-based course focuses on how technology provides new affordances for, and ways of thinking about, teaching and learning. In this course, you will examine how technology mediates and influences teaching and learning in and across formal and informal contexts. You will do this by engaging in (and reflecting upon) technology-based learning activities grounded in the ISTE Standards for Students. You will also explore the theoretical, practical, and social justice issues related to using new technologies for teaching and learning.",
+    "prerequisites": "None stated.",
+    "enrollment": "None stated.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "educ-376",
+    "number": "EDUC 376",
+    "title": "Digital Tools and Apps for 21st Century Students",
+    "credits": 3,
+    "description": "In this course, you will explore a variety of digital tools and apps that can enhance teaching and learning. You will discover how to find digital tools and apps by cultivating a digitally enhanced professional learning network. You will learn how to critically evaluate digital tools and apps in order to make informed decisions about which tools to use in educational settings, and you will learn how to design innovative, inclusive, and accessible learning experiences with digital tools and apps.",
+    "prerequisites": "None stated.",
+    "enrollment": "None stated.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "finance-408",
+    "number": "FINANCE 408",
+    "title": "Topics in Financial Technology",
+    "credits": 3,
+    "description": "In this class, students will learn how digital technology can be used to overcome frictions in the provision and use of financial services. Topics will cover multiple applications of technology in traditional and non-traditional financial services industry. Students will learn about technologies such as the use of blockchain in cryptocurrency and machine learning in quantitative trading. The class will also consider the current landscape in the Fintech industry and the changing regulatory environment.",
+    "prerequisites": "FINANCE 301 and FINANCE 305.",
+    "enrollment": "Finance BBA majors in the Isenberg School of Management.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "geograph-585",
+    "number": "GEOGRAPH 585 / NRC 585 / SPP 585",
+    "title": "Introduction to Geographic Information Systems",
+    "credits": 4,
+    "description": "This class serves as an introduction to Geographic Information Science (GIS). GIS is the science of spatial relationships, linking data to locations to explore relations between objects. Based in geographic thought and emerging from initial applications in natural resource management, GIS has evolved to be a universally applicable way of thinking and set of knowledge, skills, and practices. The goals of this course are to teach you basic GIS concepts through practice and theory, to enable you to make useful and meaningful contributions to various disciplines through spatial analysis. Throughout this course, you will be challenged to not only think spatially, but apply spatial analysis techniques within GIS.",
+    "prerequisites": "None stated.",
+    "enrollment": "The sections meet together, and each subject code has its own limit. GEOGRAPH 585 is open to undergraduate Geography, Geology, and Earth Systems majors and to MS-Geography students. NRC 585 is open to graduate students in Environmental Conservation or Sustainable Science and to juniors and seniors in Natural Resources Conservation, Building and Construction Technology, or Environmental Science.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "history-222",
+    "number": "HISTORY 222",
+    "title": "Data",
+    "credits": 4,
+    "description": "What is data? How has it been created, used, and stored in human history? What forms have humans invented in order to circulate and share it with others? And what values have societies invested in data? Challenging the idea that data is value neutral and historically static, this course will explore these questions through a history of the politics of information and its technological manifestations in societies mainly, but not exclusively located in the landmass that came to be called Europe and in the north Atlantic world. A recurring theme in the course will be the relationship between the claims that people make to political power; and the accounts that they give of how data should be created, circulated, interpreted, and controlled. How has this relationship changed over time, and how has it been inflected by changes in the nature of politics and new technological developments?",
+    "prerequisites": "None stated.",
+    "enrollment": "None stated.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [
+      "HS"
+    ],
+    "requirements": [],
+    "verified": false,
+    "unverifiedReason": "Confirm it on SPIRE."
+  },
+  {
+    "id": "journal-394mi",
+    "number": "JOURNAL 394MI",
+    "title": "Media, Technology and Culture",
+    "credits": 3,
+    "description": "This course aims to provide students with a framework for critically examining the intersections between media messages, the digital revolution and the wider sociocultural environment. That journalism has been profoundly impacted by the development of Web 2.0 applications is nowadays axiomatic. However, the precise ways in which such \"new media\" phenomena as Facebook & Twitter, the personal blog and the smart phone have transformed news gathering, packaging and dissemination still need to be researched and understood. Students will reflect critically on the manner in which their communication (e.g., their use of language, imagery and technology) creates and, in turn, is determined by, the social and cultural world(s) in which they live. Investigating their meaning-making processes in this way should translate into an increased awareness of the causes and consequences of their storytelling choices. The course readings will deal with such issues as identity formation, social and cultural diversity, linguistic and technological determinism, ritual, perception and subjectivity, and cultural competency. Satisfies the Integrative Experience requirement for BA-Journ majors.",
+    "prerequisites": "None stated.",
+    "enrollment": "Some seats are held for sophomore, junior, and senior Journalism majors. The remaining seats are open to sophomores, juniors, and seniors in other majors.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [
+      "IE (Journalism majors)"
+    ],
+    "verified": true
+  },
+  {
+    "id": "mi-eng-360",
+    "number": "M&I-ENG 360",
+    "title": "Human Factors Engineering I",
+    "credits": 3,
+    "description": "Introduction to principles of human factors (ergonomics). The necessity for considering the human aspect of design of tools, machines, systems of people and machines; the literature, and how to use it; how to quantify data about people.",
+    "prerequisites": "M&I-ENG 273.",
+    "enrollment": "Industrial Engineering majors at the start of enrollment. It opens to other students about three weeks later. Mechanical Engineering students who want it as a technical elective email the department contact named in the section notes, with a SPIRE ID.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "mi-eng-550",
+    "number": "M&I-ENG 550",
+    "title": "Vehicle Automation",
+    "credits": 3,
+    "description": "Introduction to automated vehicle systems with emphasis on transportation safety. Topics include historical background, advanced technologies in sensors and control, human factors design and application, research methodologies and state of the science, and policy and regulation.",
+    "prerequisites": "None stated.",
+    "enrollment": "Seniors and graduate students in Mechanical and Industrial Engineering.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "res-econ-390c",
+    "number": "RES-ECON 390C",
+    "title": "Thinking in the Age of Generative AI",
+    "credits": 3,
+    "description": "This is an experiential course that will explore the opportunities and challenges presented by generative AI and its impact on society. The primary focus of this course is on investigating how gen AI, as a public interest technology, can enhance human cognitive interactions with the world; it is also focused on increasing awareness of the potential ways it could de- or downgrade it. Students will have the opportunity to develop hands-on experience through prompt-engineering exercises that build gen AI literacy. In tandem with these exercises we will examine traditional ways of knowing and meaning-making, intellectual sovereignty, and historical contexts of technology-induced cognitive transformation. Students will have opportunities to reflect on their experiences and engagements with technology to identify unique challenges and effective techniques to leverage gen AI for a healthy and productive society.",
+    "prerequisites": "RES-ECON 303.",
+    "enrollment": "None beyond the prerequisite. Full sections use the department waitlist, and students still need the instructor’s permission after the semester starts.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "pubpol-204",
+    "number": "PUBPOL 204 / SPP 204",
+    "title": "Statistical Models for Public Policy",
+    "credits": 4,
+    "description": "This is designed to create intelligent consumers of policy research. The course is not designed to make students into policy researchers, but to enable them to understand the research done by others with a sufficiently skeptical eye to allow them to determine whether the findings of the research are valid given the assumptions made and methods used. This will involve, in part, learning by doing. In addition to learning about the building blocks of using statistics for understanding policies, you will be asked to work with real world data to make policy recommendations. It will also involve thinking about the various problems in data collection, measurement, and analytic approaches that could lead to faulty conclusions. (Gen. Ed. R2)",
+    "prerequisites": "Math placement level 11 or higher, or completion of the R1 basic math requirement.",
+    "enrollment": "In Fall 2026, 20 seats are reserved for Public Policy majors and 22 seats are open to general enrollment.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [
+      "R2"
+    ],
+    "requirements": [],
+    "verified": true
+  },
+  {
+    "id": "sociol-352",
+    "number": "SOCIOL 352",
+    "title": "Media, Technology, and Society",
+    "credits": 4,
+    "description": "Media and technology is all around us: E-mail, TV, Microsoft, Google, blogs, magazines, and phones shape the world we live in and ourselves. This course asks how media technology shapes the most fundamental aspects of our lives, from our education to our interpersonal relationships, our cultural tastes to our politics. We will first develop a critical perspective on the history and usage of media technology, but will then learn how to use the media and technology we talk about with special workshops on Podcasting, Powerpoint, and Wikis in order to put those lessons into sociological practice.",
+    "prerequisites": "A 100- or 200-level Sociology course.",
+    "enrollment": "None beyond the prerequisite.",
+    "buckets": [
+      "Digital Technology"
+    ],
+    "genEd": [],
+    "requirements": [],
+    "verified": true
+  }
+]
