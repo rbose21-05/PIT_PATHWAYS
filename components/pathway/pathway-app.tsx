@@ -524,16 +524,18 @@ function PathwayShell() {
             {planIsChosen ? "Chosen" : "Choose this plan"}
           </Button>
           <div
-            className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-1 rounded-lg border border-stone-200 bg-stone-50 px-2 py-1"
+            className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-1.5 rounded-lg border-2 border-stone-900 bg-white px-2.5 py-1.5 shadow-sm"
             aria-label={
               activeVersion
                 ? `Requirements ${activeVersion.name} satisfies`
                 : "Requirements this plan satisfies"
             }
           >
-            <span className="text-[11px] font-semibold tracking-wide text-stone-500">Satisfies</span>
+            <span className="rounded-md bg-stone-900 px-2 py-0.5 text-xs font-bold tracking-wide text-white">
+              Satisfies
+            </span>
             {satisfied.genEd.length === 0 && satisfied.requirements.length === 0 ? (
-              <span className="text-[11px] text-stone-400">None yet</span>
+              <span className="text-xs font-medium text-stone-600">None yet</span>
             ) : (
               <PathwayChips genEd={satisfied.genEd} requirements={satisfied.requirements} />
             )}

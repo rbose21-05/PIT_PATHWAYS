@@ -113,7 +113,7 @@ export function RootNode({ id, data }: NodeProps<RootNode>) {
         onCommit={(label) => updateNodeLabel(id, label)}
       />
       <div className="mt-2">
-        <PathwayChips genEd={data.genEd} requirements={[]} tone="dark" />
+        <PathwayChips genEd={data.genEd} requirements={[]} />
       </div>
     </div>
   );
